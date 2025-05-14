@@ -1,0 +1,184 @@
+﻿@model BookShopingCartMVC.Models.DTOs.CheckoutModel
+
+<div class="container my-5">
+	<div class="row justify-content-center">
+		<div class="col-md-8">
+			<div class="card shadow">
+				<div class="card-header bg-primary text-white">
+					<h3 class="card-title mb-0">Complete Your Order</h3>
+				</div>
+				<div class="card-body">
+					<div class="row mb-4">
+						<div class="col-md-12">
+							<div class="alert alert-info">
+								<div class="d-flex align-items-center">
+									<i class="bi bi-info-circle-fill me-2"></i>
+									<div>Please fill in your details to complete your purchase.</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<form asp-action="Checkout" asp-controller="Cart" asp-area="User" method="post" id="checkoutForm">
+						<div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+						<div class="row">
+							<div class="col-md-6 mb-3">
+								<label asp-for="Name" class="form-label">Full Name</label>
+								<div class="input-group">
+									<span class="input-group-text"><i class="bi bi-person"></i></span>
+									<input asp-for="Name" class="form-control" placeholder="Enter your full name" />
+								</div>
+								<span asp-validation-for="Name" class="text-danger"></span>
+							</div>
+
+							<div class="col-md-6 mb-3">
+								<label asp-for="Email" class="form-label">Email Address</label>
+								<div class="input-group">
+									<span class="input-group-text"><i class="bi bi-envelope"></i></span>
+									<input asp-for="Email" class="form-control" placeholder="name@example.com" />
+								</div>
+								<span asp-validation-for="Email" class="text-danger"></span>
+							</div>
+						</div>
+
+						<div class="mb-3">
+							<label asp-for="MobileNumber" class="form-label">Mobile Number</label>
+							<div class="input-group">
+								<span class="input-group-text"><i class="bi bi-phone"></i></span>
+								<input asp-for="MobileNumber" class="form-control" placeholder="Enter your mobile number" />
+							</div>
+							<span asp-validation-for="MobileNumber" class="text-danger"></span>
+						</div>
+
+						<div class="mb-3">
+							<label asp-for="Address" class="form-label">Delivery Address</label>
+							<div class="input-group">
+								<span class="input-group-text"><i class="bi bi-geo-alt"></i></span>
+								<textarea asp-for="Address" class="form-control" rows="3" placeholder="Enter your complete delivery address"></textarea>
+							</div>
+							<span asp-validation-for="Address" class="text-danger"></span>
+						</div>
+
+						<div class="mb-4">
+							<label asp-for="PaymentMethod" class="form-label">Payment Method</label>
+
+							<div class="form-check d-flex align-items-center">
+								<i class="bi bi-bank me-2 text-primary fs-4"></i>
+								<select asp-for="PaymentMethod" class="form-control">
+									<option value="">--- Select Payment Method ---</option>
+									@foreach (var method in Enum.GetValues(typeof(BookShopingCartMVC.Constants.PaymentMethod)))
+									{
+										<option value="@method.ToString()">@method.ToString()</option>
+									}
+								</select>
+							</div>
+
+							<span asp-validation-for="PaymentMethod" class="text-danger"></span>
+						</div>
+
+						<div class="row mb-4">
+							<div class="col-md-12">
+								<div class="card bg-light">
+									<div class="card-body">
+										<h5 class="card-title">Order Summary</h5>
+										<div class="d-flex justify-content-between mb-2">
+											<span>Subtotal:</span>
+											<span id="subtotal">₨ @(ViewBag.SubTotal != null ? ViewBag.SubTotal.ToString("F2") : "0.00")</span>
+										</div>
+										<div class="d-flex justify-content-between mb-2">
+											<span>Shipping:</span>
+											<span id="shipping">₨ @(ViewBag.Shipping != null ? ViewBag.Shipping.ToString("F2") : "0.00")</span>
+										</div>
+										<hr>
+										<div class="d-flex justify-content-between">
+											<strong>Total:</strong>
+											<strong id="total">₨ @(ViewBag.Total != null ? ViewBag.Total.ToString("F2") : "0.00")</strong>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="d-flex justify-content-between">
+							<a href="@Url.Action("Index", "Cart", new { area = "User" })" class="btn btn-outline-secondary">
+								<i class="bi bi-arrow-left"></i> Back to Cart
+							</a>
+							<button type="submit" class="btn btn-primary">
+								<i class="bi bi-lock-fill me-1"></i> Complete Order
+							</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+@section Scripts {
+	<partial name="_ValidationScriptsPartial" />
+	<script>
+		$(document).ready(function() {
+			// Simple form validation enhancement
+			$("#checkoutForm").on("submit", function(e) {
+				if (!this.checkValidity()) {
+					e.preventDefault();
+					e.stopPropagation();
+
+					// Highlight the first invalid field
+					$(this).find(":invalid").first().focus();
+
+					// Show toast notification
+					showToast("Please check the form for errors", "warning");
+				} else {
+					// Show loading state
+					$("button[type='submit']").prop("disabled", true).html(
+						'<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span> Processing...'
+					);
+				}
+
+				$(this).addClass("was-validated");
+			});
+
+			// Phone number formatting (optional)
+			$("#MobileNumber").on("input", function() {
+				var input = $(this).val().replace(/\D/g, '');
+				if (input.length > 10) input = input.substr(0, 10);
+
+				// Format as XXX-XXX-XXXX
+				if (input.length > 6) {
+					$(this).val(input.substr(0, 3) + '-' + input.substr(3, 3) + '-' + input.substr(6));
+				} else if (input.length > 3) {
+					$(this).val(input.substr(0, 3) + '-' + input.substr(3));
+				} else {
+					$(this).val(input);
+				}
+			});
+
+			// Toast notification function
+			function showToast(message, type) {
+				var toastHTML = `
+					<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+						<div class="toast align-items-center text-white bg-${type} border-0" role="alert" aria-live="assertive" aria-atomic="true">
+							<div class="d-flex">
+								<div class="toast-body">
+									${message}
+								</div>
+								<button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+							</div>
+						</div>
+					</div>
+				`;
+
+				$(toastHTML).appendTo("body");
+				var toast = new bootstrap.Toast($('.toast'));
+				toast.show();
+
+				// Auto remove after shown
+				$('.toast').on('hidden.bs.toast', function() {
+					$(this).parent().remove();
+				});
+			}
+		});
+	</script>
+}

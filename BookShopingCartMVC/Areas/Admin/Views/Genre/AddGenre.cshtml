@@ -1,0 +1,76 @@
+﻿@model GenreDto
+@{
+    ViewData["Title"] = "Add Genre";
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                    <h3 class="mb-0">Add New Genre</h3>
+                    <a href="@Url.Action("Index", "Genre", new { area = "Admin" })" class="btn btn-light btn-sm">
+                        <i class="bi bi-arrow-left"></i> Back to List
+                    </a>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-info">
+                        <i class="bi bi-info-circle me-2"></i>
+                        Adding a new genre will make it available for categorizing content throughout the application.
+                    </div>
+
+                    <form asp-area="Admin" asp-controller="Genre" asp-action="AddGenre" method="post" id="addGenreForm" class="needs-validation" novalidate>
+                        <div class="mb-3">
+                            <label for="GenreName" class="form-label fw-bold">Genre Name</label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="bi bi-tag"></i>
+                                </span>
+                                <input type="text" class="form-control" asp-for="GenreName"
+                                       placeholder="Enter genre name" required
+                                       minlength="2" maxlength="50"
+                                       autocomplete="off" />
+                            </div>
+                            <span asp-validation-for="GenreName" class="text-danger mt-1 d-block"></span>
+                            <div class="form-text">Genre name must be between 2 and 50 characters.</div>
+                        </div>
+
+                        <div class="d-flex justify-content-end gap-2 mt-4">
+                            <a href="@Url.Action("Index", "Genre", new { area = "Admin" })" class="btn btn-outline-secondary">
+                                <i class="bi bi-x-circle"></i> Cancel
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-plus-circle"></i> Add Genre
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Client-side validation
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('addGenreForm');
+
+            form.addEventListener('submit', function(event) {
+                if (!form.checkValidity()) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+
+                form.classList.add('was-validated');
+            });
+
+            // Focus on the name input when the page loads
+            document.getElementById('GenreName').focus();
+        });
+    </script>
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

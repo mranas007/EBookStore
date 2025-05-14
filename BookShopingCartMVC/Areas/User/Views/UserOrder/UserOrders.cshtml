@@ -1,0 +1,116 @@
+﻿@model IEnumerable<BookShopingCartMVC.Models.Order>
+
+<div class="container mt-4 min-vh-100">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="mb-0">My Orders</h2>
+        <a href="@Url.Action("Index", "Home", "User")" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left"></i> Back to Home
+        </a>
+    </div>
+
+    @if (Model != null && Model.Count() > 0)
+    {
+        <div class="accordion" id="orderAccordion">
+            @foreach (var order in Model)
+            {
+                <div class="card mb-3 shadow-sm">
+                    <div class="card-header d-flex justify-content-between align-items-center"
+                         id="heading@(order.Id)">
+                        <div>
+                            <span class="text-muted">Order ID: #@order.Id</span>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <div class="me-4">
+                                <strong>Date:</strong> @order.CreateDate.ToString("dd-MM-yyyy")
+                            </div>
+                            <div class="me-4">
+                                <span class="badge bg-@(order.OrderStatus.StatusName == "Completed" ? "success" :
+                                                      order.OrderStatus.StatusName == "Processing" ? "primary" :
+                                                      order.OrderStatus.StatusName == "Pending" ? "warning" : "secondary")">
+                                    @order.OrderStatus.StatusName
+                                </span>
+                            </div>
+                            <strong class="me-2">
+                                Total: ₨ @(order.OrderDetail.Select(item => item.Book.Price * item.Quantity).Sum().ToString("F2"))
+                            </strong>
+                            <button class="btn btn-link collapsed p-0" type="button"
+                                    data-bs-toggle="collapse" data-bs-target="#collapse@(order.Id)"
+                                    aria-expanded="false" aria-controls="collapse@(order.Id)">
+                                <i class="bi bi-chevron-down"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="collapse@(order.Id)" class="collapse" aria-labelledby="heading@(order.Id)" data-bs-parent="#orderAccordion">
+                        <div class="card-body p-0">
+                            <div class="table-responsive">
+                                <table class="table table-hover mb-0">
+                                    <thead class="thead-light">
+                                        <tr>
+                                            <th style="width: 80px">Image</th>
+                                            <th>Book</th>
+                                            <th>Genre</th>
+                                            <th>Quantity</th>
+                                            <th>Unit Price</th>
+                                            <th>Total</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in order.OrderDetail)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    @if (string.IsNullOrEmpty(item.Book.Image))
+                                                    {
+                                                        <img src="/images/no-image.jpg" alt="No Image" class="img-thumbnail" style="height: 60px; width: 45px;" />
+                                                    }
+                                                    else
+                                                    {
+                                                        <img src="~/Uploads/@item.Book.Image" alt="@item.Book.BookName" class="img-thumbnail" style="height: 60px; width: 45px;" />
+                                                    }
+                                                </td>
+                                                <td>@item.Book.BookName</td>
+                                                <td>@item.Book.Genre.GenreName</td>
+                                                <td>@item.Quantity</td>
+                                                <td>₨ @item.Book.Price.ToString("F2")</td>
+                                                <td>₨ @((item.Book.Price * item.Quantity).ToString("F2"))</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info text-center p-5">
+            <i class="bi bi-bag-x" style="font-size: 3rem;"></i>
+            <h4 class="mt-3">No Orders Found</h4>
+            <p>You haven't placed any orders yet.</p>
+            <a href="@Url.Action("Index", "Book")" class="btn btn-primary mt-2">Browse Books</a>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Alternative approach - listen for Bootstrap collapse events
+            $('.collapse').on('show.bs.collapse', function() {
+                $(this).closest('.card').find('[data-bs-toggle="collapse"] i')
+                    .removeClass('bi-chevron-down')
+                    .addClass('bi-chevron-up');
+            });
+
+            $('.collapse').on('hide.bs.collapse', function() {
+                $(this).closest('.card').find('[data-bs-toggle="collapse"] i')
+                    .removeClass('bi-chevron-up')
+                    .addClass('bi-chevron-down');
+            });
+        });
+    </script>
+}

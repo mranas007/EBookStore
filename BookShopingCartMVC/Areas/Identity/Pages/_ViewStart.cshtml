@@ -1,0 +1,16 @@
+﻿@inject UserManager<IdentityUser> userManager;
+@inject SignInManager<IdentityUser> signInManager;
+@{
+	if (signInManager.IsSignedIn(User))
+	{
+		Layout = "/Views/Shared/_UserLayout.cshtml";
+	}
+	// else if (signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+	// {
+	// 	Layout = "/Views/Shared/_AdminLayout.cshtml";
+	// }
+	else
+	{
+		Layout = "/Views/Shared/_Layout.cshtml";
+	}
+}

@@ -1,0 +1,270 @@
+﻿@{
+	ViewData["Title"] = "Browse Our Collection";
+}
+
+<!-- Hero Section -->
+<section class="bg-primary bg-gradient text-white py-5">
+	<div class="container-fluid py-5">
+		<div class="row align-items-center">
+			<div class="col-lg-6">
+				<h1 class="display-3 fw-bold mb-3">Discover Your Next Favorite Book</h1>
+				<p class="lead mb-4">Thousands of ebooks at your fingertips. Read anywhere, anytime on any device.</p>
+				<div class="d-grid gap-2 d-md-flex justify-content-md-start">
+					<a asp-area="Guest" asp-controller="Home" asp-action="BooksCollection" class="btn btn-light btn-lg px-4 me-md-2 fw-bold">Browse Collection</a>
+					<a asp-area="Identity" asp-page="/Account/Register" class="btn btn-outline-light btn-lg px-4">Join Now</a>
+				</div>
+			</div>
+			<div class="col-lg-6 d-none d-lg-block">
+				<img src="https://www.apple.com/newsroom/images/2023/11/apple-unveils-the-top-books-of-2023-and-a-new-year-in-review-experience/article/Apple-Books-Year-in-Review-hero_inline.jpg.large.jpg"
+					alt="Ebook reader" class="img-fluid rounded shadow-lg">
+			</div>
+		</div>
+	</div>
+</section>
+
+<!-- Categories Section -->
+<section class="py-5 bg-light">
+	<div class="container py-5">
+		<h2 class="display-6 fw-bold text-center mb-5">Explore Top Categories</h2>
+		<div class="row g-4">
+			<div class="col-md-4 col-sm-6">
+				<div class="card h-100 shadow-sm">
+					<div class="card-body text-center p-4">
+						<div class="mb-4">
+							<i class="bi bi-book text-primary" style="font-size: 2.5rem;"></i>
+						</div>
+						<h5 class="card-title fw-bold">Fiction</h5>
+						<p class="card-text text-muted">Explore worlds of imagination through novels, short stories, and more.</p>
+						<a href="#" class="btn btn-outline-primary mt-3">Browse Fiction</a>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4 col-sm-6">
+				<div class="card h-100 shadow-sm">
+					<div class="card-body text-center p-4">
+						<div class="mb-4">
+							<i class="bi bi-lightbulb text-primary" style="font-size: 2.5rem;"></i>
+						</div>
+						<h5 class="card-title fw-bold">Self Improvement</h5>
+						<p class="card-text text-muted">Discover insights and techniques to enhance your personal growth.</p>
+						<a href="#" class="btn btn-outline-primary mt-3">Explore Self-Help</a>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4 col-sm-6">
+				<div class="card h-100 shadow-sm">
+					<div class="card-body text-center p-4">
+						<div class="mb-4">
+							<i class="bi bi-globe text-primary" style="font-size: 2.5rem;"></i>
+						</div>
+						<h5 class="card-title fw-bold">Non-Fiction</h5>
+						<p class="card-text text-muted">Learn about history, science, biographies, and academic subjects.</p>
+						<a href="#" class="btn btn-outline-primary mt-3">View Non-Fiction</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<!-- Featured Books Section -->
+<section class="py-5">
+	<div class="container py-5">
+		<h2 class="display-6 fw-bold text-center mb-5">Bestselling Books</h2>
+		<div class="row g-4">
+			<!-- Book 1 -->
+			<div class="col-lg-3 col-md-6">
+				<div class="card h-100 shadow-sm">
+					<img src="/api/placeholder/400/600" class="card-img-top" alt="Book Cover">
+					<div class="card-body">
+						<span class="badge bg-success mb-2">Bestseller</span>
+						<h5 class="card-title fw-bold">The Midnight Library</h5>
+						<p class="card-text text-muted">Matt Haig</p>
+						<div class="d-flex justify-content-between align-items-center">
+							<span class="fw-bold text-primary">$12.99</span>
+							<a href="#" class="btn btn-sm btn-outline-primary">Add to Cart</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- Book 2 -->
+			<div class="col-lg-3 col-md-6">
+				<div class="card h-100 shadow-sm">
+					<img src="/api/placeholder/400/600" class="card-img-top" alt="Book Cover">
+					<div class="card-body">
+						<span class="badge bg-danger mb-2">New Release</span>
+						<h5 class="card-title fw-bold">Atomic Habits</h5>
+						<p class="card-text text-muted">James Clear</p>
+						<div class="d-flex justify-content-between align-items-center">
+							<span class="fw-bold text-primary">$14.99</span>
+							<a href="#" class="btn btn-sm btn-outline-primary">Add to Cart</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- Book 3 -->
+			<div class="col-lg-3 col-md-6">
+				<div class="card h-100 shadow-sm">
+					<img src="/api/placeholder/400/600" class="card-img-top" alt="Book Cover">
+					<div class="card-body">
+						<span class="badge bg-primary mb-2">Popular</span>
+						<h5 class="card-title fw-bold">Educated</h5>
+						<p class="card-text text-muted">Tara Westover</p>
+						<div class="d-flex justify-content-between align-items-center">
+							<span class="fw-bold text-primary">$11.99</span>
+							<a href="#" class="btn btn-sm btn-outline-primary">Add to Cart</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- Book 4 -->
+			<div class="col-lg-3 col-md-6">
+				<div class="card h-100 shadow-sm">
+					<img src="/api/placeholder/400/600" class="card-img-top" alt="Book Cover">
+					<div class="card-body">
+						<span class="badge bg-warning text-dark mb-2">Featured</span>
+						<h5 class="card-title fw-bold">Dune</h5>
+						<p class="card-text text-muted">Frank Herbert</p>
+						<div class="d-flex justify-content-between align-items-center">
+							<span class="fw-bold text-primary">$9.99</span>
+							<a href="#" class="btn btn-sm btn-outline-primary">Add to Cart</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="text-center mt-5">
+			<a href="#" class="btn btn-primary btn-lg">View All Books</a>
+		</div>
+	</div>
+</section>
+
+<!-- Why Choose Us Section -->
+<section class="py-5 bg-light">
+	<div class="container py-5">
+		<h2 class="display-6 fw-bold text-center mb-5">Why Choose BookHaven</h2>
+		<div class="row g-4">
+			<div class="col-md-4">
+				<div class="text-center">
+					<i class="bi bi-lightning-charge-fill text-primary mb-3" style="font-size: 2.5rem;"></i>
+					<h4 class="fw-bold">Instant Access</h4>
+					<p class="text-muted">Download or read online instantly after purchase. No waiting required.</p>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="text-center">
+					<i class="bi bi-collection-fill text-primary mb-3" style="font-size: 2.5rem;"></i>
+					<h4 class="fw-bold">Huge Selection</h4>
+					<p class="text-muted">Over 1 million titles across all genres, with new releases added daily.</p>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="text-center">
+					<i class="bi bi-device-ssd-fill text-primary mb-3" style="font-size: 2.5rem;"></i>
+					<h4 class="fw-bold">Read Anywhere</h4>
+					<p class="text-muted">Sync across all your devices - pick up right where you left off.</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<!-- Testimonials Section -->
+<section class="py-5">
+	<div class="container py-5">
+		<h2 class="display-6 fw-bold text-center mb-5">What Our Readers Say</h2>
+		<div class="row g-4">
+			<div class="col-md-4">
+				<div class="card h-100 shadow-sm">
+					<div class="card-body p-4">
+						<div class="mb-3 text-warning">
+							<i class="bi bi-star-fill"></i>
+							<i class="bi bi-star-fill"></i>
+							<i class="bi bi-star-fill"></i>
+							<i class="bi bi-star-fill"></i>
+							<i class="bi bi-star-fill"></i>
+						</div>
+						<blockquote class="mb-3">
+							<p class="fst-italic">"BookHaven has transformed my reading experience. The selection is incredible, and I love being able to start reading immediately after purchase."</p>
+						</blockquote>
+						<div class="d-flex align-items-center">
+							<div class="rounded-circle bg-primary text-center text-white p-3 me-3">
+								<span class="fw-bold">AM</span>
+							</div>
+							<div>
+								<h6 class="mb-0 fw-bold">Alexandra Morgan</h6>
+								<small class="text-muted">Book Enthusiast</small>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="card h-100 shadow-sm">
+					<div class="card-body p-4">
+						<div class="mb-3 text-warning">
+							<i class="bi bi-star-fill"></i>
+							<i class="bi bi-star-fill"></i>
+							<i class="bi bi-star-fill"></i>
+							<i class="bi bi-star-fill"></i>
+							<i class="bi bi-star-fill"></i>
+						</div>
+						<blockquote class="mb-3">
+							<p class="fst-italic">"I travel a lot for work, and having my entire library in my pocket has been a game-changer. The user experience is seamless."</p>
+						</blockquote>
+						<div class="d-flex align-items-center">
+							<div class="rounded-circle bg-primary text-center text-white p-3 me-3">
+								<span class="fw-bold">JD</span>
+							</div>
+							<div>
+								<h6 class="mb-0 fw-bold">James Davis</h6>
+								<small class="text-muted">Business Traveler</small>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="card h-100 shadow-sm">
+					<div class="card-body p-4">
+						<div class="mb-3 text-warning">
+							<i class="bi bi-star-fill"></i>
+							<i class="bi bi-star-fill"></i>
+							<i class="bi bi-star-fill"></i>
+							<i class="bi bi-star-fill"></i>
+							<i class="bi bi-star-half"></i>
+						</div>
+						<blockquote class="mb-3">
+							<p class="fst-italic">"The recommendations are spot on! I've discovered so many new authors that I now love. Their customer service is also exceptional."</p>
+						</blockquote>
+						<div class="d-flex align-items-center">
+							<div class="rounded-circle bg-primary text-center text-white p-3 me-3">
+								<span class="fw-bold">SL</span>
+							</div>
+							<div>
+								<h6 class="mb-0 fw-bold">Sarah Lin</h6>
+								<small class="text-muted">Fiction Lover</small>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<!-- Call to Action Banner -->
+<section class="py-5 bg-primary text-white">
+	<div class="container py-4">
+		<div class="row align-items-center">
+			<div class="col-lg-8 text-center text-lg-start">
+				<h2 class="fw-bold mb-3">Ready to Start Your Reading Journey?</h2>
+				<p class="lead mb-lg-0">Join thousands of happy readers today. Sign up and get 10% off your first purchase!</p>
+			</div>
+			<div class="col-lg-4 d-flex justify-content-center justify-content-lg-end">
+				<a href="#" class="btn btn-light btn-lg fw-bold">Sign Up Now</a>
+			</div>
+		</div>
+	</div>
+</section>
+

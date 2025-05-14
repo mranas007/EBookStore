@@ -1,0 +1,183 @@
+﻿@model UpdateOrderStatusDto
+@{
+	ViewData["Title"] = "Update Order Status";
+}
+
+<div class="container-fluid px-4 mt-4">
+	<nav aria-label="breadcrumb" class="mb-3">
+		<ol class="breadcrumb">
+			<li class="breadcrumb-item"><a asp-controller="Dashboard" asp-action="Index">Dashboard</a></li>
+			<li class="breadcrumb-item"><a asp-action="AllOrders">Orders</a></li>
+			<li class="breadcrumb-item active">Update Status</li>
+		</ol>
+	</nav>
+
+	<div class="card mb-4">
+		<div class="card-header d-flex justify-content-between align-items-center">
+			<div>
+				<i class="bi bi-arrow-repeat me-1"></i>
+				Update Order Status
+			</div>
+			<a class="btn btn-sm btn-outline-secondary" asp-action="AllOrders">
+				<i class="bi bi-arrow-left me-1"></i> Back to Orders
+			</a>
+		</div>
+		<div class="card-body">
+			<div class="row">
+				<div class="col-md-8 col-lg-6 mx-auto">
+					@if (TempData["message"] != null)
+					{
+						<div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
+							<i class="bi bi-check-circle me-2"></i> @TempData["message"]
+							<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+						</div>
+					}
+
+					@if (TempData["error"] != null)
+					{
+						<div class="alert alert-danger alert-dismissible fade show mb-4" role="alert">
+							<i class="bi bi-exclamation-triangle me-2"></i> @TempData["error"]
+							<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+						</div>
+					}
+
+					@* <div class="card border shadow-sm mb-4"> *@
+					@* 	<div class="card-header bg-light"> *@
+					@* 		<h5 class="card-title mb-0">Order #@Model.OrderNumber</h5> *@
+					@* 	</div> *@
+					@* 	<div class="card-body p-0"> *@
+					@* 		<ul class="list-group list-group-flush"> *@
+					@* 			<li class="list-group-item d-flex justify-content-between"> *@
+					@* 				<span class="text-muted">Customer:</span> *@
+					@* 				<span class="fw-medium">@Model.CustomerName</span> *@
+					@* 			</li> *@
+					@* 			<li class="list-group-item d-flex justify-content-between"> *@
+					@* 				<span class="text-muted">Date:</span> *@
+					@* 				<span class="fw-medium">@Model.OrderDate.ToString("MMM dd, yyyy")</span> *@
+					@* 			</li> *@
+					@* 			<li class="list-group-item d-flex justify-content-between"> *@
+					@* 				<span class="text-muted">Total:</span> *@
+					@* 				<span class="fw-bold">$@Model.OrderTotal.ToString("0.00")</span> *@
+					@* 			</li> *@
+					@* 			<li class="list-group-item d-flex justify-content-between"> *@
+					@* 				<span class="text-muted">Current Status:</span> *@
+					@* 				@{ *@
+					@* 					string statusClass = Model.CurrentStatus?.ToLower() switch *@
+					@* 					{ *@
+					@* 						"pending" => "bg-warning", *@
+					@* 						"processing" => "bg-info", *@
+					@* 						"shipped" => "bg-primary", *@
+					@* 						"delivered" => "bg-success", *@
+					@* 						"cancelled" => "bg-danger", *@
+					@* 						_ => "bg-secondary" *@
+					@* 					}; *@
+					@* 				} *@
+					@* 				<span class="badge @statusClass">@Model.CurrentStatus</span> *@
+					@* 			</li> *@
+					@* 		</ul> *@
+					@* 	</div> *@
+					@* </div> *@
+
+					<form asp-action="UpdateOrderStatus" id="statusUpdateForm">
+						<input type="hidden" asp-for="OrderId" />
+
+						<div class="mb-3">
+							<label asp-for="OrderStatusId" class="form-label fw-medium">New Status</label>
+							<select class="form-select form-select-lg" asp-for="OrderStatusId" asp-items="@Model.OrderStatusList">
+								<option value="">Select Order Status</option>
+							</select>
+							<span class="text-danger" asp-validation-for="OrderStatusId"></span>
+						</div>
+
+						<div class="mb-3">
+							<div class="form-check">
+								<input class="form-check-input" type="checkbox" id="notifyCustomer" name="NotifyCustomer" checked>
+								<label class="form-check-label" for="notifyCustomer">
+									Notify customer via email
+								</label>
+							</div>
+						</div>
+
+						<div class="d-grid gap-2 d-md-flex justify-content-md-end">
+							<a class="btn btn-outline-secondary" asp-action="AllOrders">
+								Cancel
+							</a>
+							<button type="submit" class="btn btn-primary">
+								<i class="bi bi-check2 me-1"></i> Update Status
+							</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+		<div class="card-footer">
+			<small class="text-muted">Status updates are logged and can be viewed in the order history.</small>
+		</div>
+	</div>
+</div>
+
+@section Scripts {
+	<partial name="_ValidationScriptsPartial" />
+
+	<script>
+		$(document).ready(function() {
+			// Show confirmation when form is submitted
+			$('#statusUpdateForm').on('submit', function(e) {
+				// Check if a status is selected
+				const selectedStatus = $('#OrderStatusId').val();
+				if (!selectedStatus) {
+					return false; // Let validation handle this
+				}
+
+				// Add any additional client-side validation or confirmation if needed
+
+				// Example: Show spinner on button when submitting
+				$(this).find('button[type="submit"]').html('<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span> Updating...');
+			});
+
+			// Add visual feedback when status is selected
+			$('#OrderStatusId').on('change', function() {
+				const selectedStatus = $(this).val();
+				const selectedText = $(this).find('option:selected').text().toLowerCase();
+
+				// Remove any existing status classes
+				$(this).removeClass('border-warning border-info border-primary border-success border-danger');
+
+				// Add appropriate class based on selected status
+				if (selectedText) {
+					switch(selectedText) {
+						case 'pending':
+							$(this).addClass('border-warning');
+							break;
+						case 'processing':
+							$(this).addClass('border-info');
+							break;
+						case 'shipped':
+							$(this).addClass('border-primary');
+							break;
+						case 'delivered':
+							$(this).addClass('border-success');
+							break;
+						case 'cancelled':
+							$(this).addClass('border-danger');
+							break;
+					}
+				}
+			});
+		});
+	</script>
+}
+
+<style>
+	.form-select.border-warning,
+	.form-select.border-info,
+	.form-select.border-primary,
+	.form-select.border-success,
+	.form-select.border-danger {
+		border-width: 2px;
+	}
+
+	#statusUpdateForm {
+		transition: all 0.3s ease;
+	}
+</style>

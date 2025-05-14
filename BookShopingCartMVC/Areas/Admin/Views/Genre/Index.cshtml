@@ -1,0 +1,187 @@
+﻿@model IEnumerable<Genre>
+@{
+	ViewData["Title"] = "Genres";
+}
+
+<div class="container-fluid">
+	@if (TempData["success"] is not null)
+	{
+		<div class="alert alert-success alert-dismissible fade show" role="alert">
+			@TempData["success"]
+			<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+		</div>
+	}
+	@if (TempData["message"] is not null)
+	{
+		<div class="alert alert-info alert-dismissible fade show" role="alert">
+			@TempData["message"]
+			<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+		</div>
+	}
+	@if (TempData["error"] is not null)
+	{
+		<div class="alert alert-danger alert-dismissible fade show" role="alert">
+			@TempData["error"]
+			<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+		</div>
+	}
+	<!-- Page Header -->
+	<div class="d-flex justify-content-between align-items-center mb-4">
+		<div>
+			<h4 class="mb-0">Genre Management</h4>
+			<nav aria-label="breadcrumb">
+				<ol class="breadcrumb mb-0 small">
+					<li class="breadcrumb-item"><a asp-controller="Admin" asp-action="Dashboard" class="text-decoration-none">Dashboard</a></li>
+					<li class="breadcrumb-item active" aria-current="page">Genres</li>
+				</ol>
+			</nav>
+		</div>
+		<a class="btn btn-primary" asp-action="AddGenre" asp-controller="Genre">
+			<i class="bi bi-plus-circle me-1"></i> Add New Genre
+		</a>
+	</div>
+
+	<!-- Stats Row -->
+	<div class="row mb-4">
+		<div class="col-md-3">
+			<div class="card border-0 shadow-sm">
+				<div class="card-body d-flex align-items-center">
+					<div class="bg-light p-3 rounded-3 me-3">
+						<i class="bi bi-tags text-primary fs-4"></i>
+					</div>
+					<div>
+						<h6 class="mb-0">Total Genres</h6>
+						<h3 class="mb-0">@Model.Count()</h3>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Genre Table Card -->
+	<div class="card border-0 shadow-sm">
+		<div class="card-header bg-white d-flex justify-content-between align-items-center py-3">
+			<h5 class="mb-0">All Genres</h5>
+			<div class="input-group" style="max-width: 300px;">
+				<input type="text" id="genreSearch" class="form-control" placeholder="Search genres...">
+				<button class="btn btn-outline-secondary" type="button">
+					<i class="bi bi-search"></i>
+				</button>
+			</div>
+		</div>
+		<div class="card-body p-0">
+			<div class="table-responsive">
+				<table class="table table-hover align-middle mb-0" id="genreTable">
+					<thead class="table-light">
+						<tr>
+							<th class="ps-4" style="width: 50px">#</th>
+							<th>Genre Name</th>
+							<th>Books Count</th>
+							<th class="text-end pe-4">Actions</th>
+						</tr>
+					</thead>
+					@* ------------------------------------ Genre body *@
+					<tbody>
+						@foreach (var genre in Model.Select((value, index) => new { value, index }))
+						{
+							var bookCount = genre.value.Books?.Count ?? 0; // Simplify book count logic
+							<tr>
+								<td class="ps-4">@(genre.index + 1)</td>
+								<td>
+									<span class="fw-medium">@genre.value.GenreName</span>
+								</td>
+								<td>
+									<span class="badge bg-light text-dark">@bookCount books</span>
+								</td>
+								<td class="text-end pe-4">
+									<div class="d-flex justify-content-end gap-2">
+										<a asp-action="UpdateGenre" asp-controller="Genre" asp-route-id="@genre.value.Id"
+										   class="btn btn-sm btn-outline-primary edit-genre">
+											<i class="bi bi-pencil"></i>
+										</a>
+										<button class="btn btn-sm btn-outline-danger delete-genre"
+												data-bs-toggle="modal"
+												data-bs-target="#deleteGenreModal-@genre.value.Id">
+											<i class="bi bi-trash"></i>
+										</button>
+
+										<!-- Delete Genre Modal -->
+										<div class="modal fade" id="deleteGenreModal-@genre.value.Id" tabindex="-1" aria-labelledby="deleteGenreModalLabel-@genre.value.Id" aria-hidden="true">
+											<div class="modal-dialog modal-dialog-centered">
+												<div class="modal-content shadow">
+													<form id="deleteGenreForm-@genre.value.Id" asp-controller="Genre" asp-action="DeleteGenre" asp-route-id="@genre.value.Id" method="post">
+														<div class="modal-header bg-danger text-white">
+															<h5 class="modal-title" id="deleteGenreModalLabel-@genre.value.Id">
+																<i class="bi bi-trash me-2"></i>Confirm Delete
+															</h5>
+															<button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+														</div>
+														<div class="modal-body p-4">
+															<div class="text-center mb-4">
+																<i class="bi bi-exclamation-triangle-fill text-warning" style="font-size: 64px;"></i>
+															</div>
+															<p class="text-center fs-5">Are you sure you want to delete the genre <strong>@genre.value.GenreName</strong>?</p>
+															<div class="alert alert-danger">
+																<i class="bi bi-exclamation-circle me-2"></i>
+																<span class="fw-semibold">Warning:</span> This action cannot be undone and may affect books assigned to this genre.
+															</div>
+														</div>
+														<div class="modal-footer bg-light">
+															<button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+																<i class="bi bi-x-circle me-1"></i>Cancel
+															</button>
+															<button type="submit" class="btn btn-danger">
+																<i class="bi bi-trash me-1"></i>Delete Genre
+															</button>
+														</div>
+													</form>
+												</div>
+											</div>
+										</div>
+									</div>
+								</td>
+							</tr>
+						}
+
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div class="card-footer bg-white">
+			<nav aria-label="Page navigation">
+				<ul class="pagination justify-content-end mb-0">
+					<li class="page-item disabled">
+						<a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+					</li>
+					<li class="page-item active"><a class="page-link" href="#">1</a></li>
+					<li class="page-item"><a class="page-link" href="#">2</a></li>
+					<li class="page-item"><a class="page-link" href="#">3</a></li>
+					<li class="page-item">
+						<a class="page-link" href="#">Next</a>
+					</li>
+				</ul>
+			</nav>
+		</div>
+	</div>
+</div>
+
+@section Scripts {
+	<script>
+		// Search functionality
+		document.getElementById('genreSearch').addEventListener('keyup', function() {
+			const searchText = this.value.toLowerCase();
+			const table = document.getElementById('genreTable');
+			const rows = table.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+
+			for (let i = 0; i < rows.length; i++) {
+				const genreName = rows[i].getElementsByTagName('td')[1].textContent.toLowerCase();
+				if (genreName.includes(searchText)) {
+					rows[i].style.display = '';
+				} else {
+					rows[i].style.display = 'none';
+				}
+			}
+		});
+
+	</script>
+}

@@ -1,0 +1,200 @@
+html {
+    font-size: 14px;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+
+.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
+    color: var(--bs-secondary-color);
+    text-align: end;
+}
+
+.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
+    text-align: start;
+}
+
+/*/------------------ _Layout - navbar -----------------------/*/
+#navbar {
+    position: sticky;
+    top: 0;
+    z-index: 1020; /* Ensure it stays above other elements */
+}
+/*/------------------ Books Card -----------------------/*/
+.hover-scale {
+    transition: transform 0.2s ease;
+}
+
+    .hover-scale:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+
+.card-img-top {
+    object-position: center;
+}
+
+/*/------------------ hovring card in (User Books)page -----------------------/*/
+.hover-scale {
+    transition: transform 0.2s ease-in-out;
+}
+
+    .hover-scale:hover {
+        transform: scale(1.03);
+    }
+
+.card .btn {
+    transition: all 0.2s ease-in-out;
+}
+
+    .card .btn:hover {
+        transform: translateY(-1px);
+    }
+
+/********************************************** Admin Layout **********************************************/
+#admin {
+    overflow-x: hidden;
+    background-color: #f8f9fa;
+}
+
+#wrapper {
+    display: flex;
+    min-height: 100vh;
+}
+
+#sidebar-wrapper {
+    width: 250px;
+    min-height: 100vh;
+    position: fixed;
+    z-index: 1000;
+    transition: all 0.3s ease-in-out;
+}
+
+#content-wrapper {
+    width: 100%;
+    margin-left: 250px;
+    transition: all 0.3s ease-in-out;
+    display: flex;
+    flex-direction: column;
+}
+
+.navbar-fixed {
+    position: fixed;
+    right: 0;
+    left: 250px;
+    z-index: 999;
+    transition: all 0.3s ease-in-out;
+}
+
+.main-content {
+    margin-top: 70px;
+    padding: 20px;
+    flex: 1;
+}
+
+#wrapper.toggled #sidebar-wrapper {
+    margin-left: -250px;
+}
+
+#wrapper.toggled #content-wrapper {
+    margin-left: 0;
+}
+
+#wrapper.toggled .navbar-fixed {
+    left: 0;
+}
+
+.sidebar-heading {
+    padding: 1rem 1.5rem;
+    font-size: 1.2rem;
+}
+
+.active-link {
+    color: #fff !important;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+/*    color: #fff !important;*/
+}
+
+.sidebar-footer {
+    border-top: 1px solid #444;
+    padding: 15px;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
+
+.sidebar-footer {
+    border-top: 1px solid #444;
+    padding: 15px;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background-color: #212529;
+}
+
+    .sidebar-footer .btn-outline-light {
+        color: #adb5bd;
+        border-color: #495057;
+    }
+
+        .sidebar-footer .btn-outline-light:hover {
+            background-color: #495057;
+            color: white;
+        }
+
+@media (max-width: 768px) {
+    #sidebar-wrapper {
+        margin-left: -250px;
+    }
+
+    #content-wrapper {
+        margin-left: 0;
+    }
+
+    .navbar-fixed {
+        left: 0;
+    }
+
+    #wrapper.toggled #sidebar-wrapper {
+        margin-left: 0;
+    }
+
+    #wrapper.toggled #content-wrapper {
+        margin-left: 250px;
+    }
+
+    #wrapper.toggled .navbar-fixed {
+        left: 250px;
+    }
+}
+/*/------------------ AllOrders (Admin) -----------------------/*/
+
+.table .badge {
+    font-size: 0.85em;
+}
+
+.order-row:hover {
+    background-color: rgba(0, 123, 255, 0.04);
+}
+
+.table-responsive {
+    min-height: 300px;
+}
+

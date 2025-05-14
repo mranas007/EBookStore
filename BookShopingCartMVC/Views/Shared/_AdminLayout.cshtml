@@ -1,0 +1,156 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject UserManager<IdentityUser> UserManager
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>@ViewData["Title"] - EBookStore</title>
+	<script type="importmap"></script>
+	<link rel="icon" href="~/images/icons/fav-icon.webp" type="image/x-icon" />
+	<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+	<link rel="stylesheet" href="~/BookShopingCartMVC.styles.css" asp-append-version="true" />
+
+	<!-- Bootstrap Icons -->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+
+</head>
+<body id="admin">
+	<div id="wrapper">
+		<!-- Sidebar -->
+		<div class="bg-dark" id="sidebar-wrapper">
+			<div class="sidebar-heading text-white d-flex align-items-center">
+				<i class="bi bi-book-half fs-4 me-2"></i>
+				<div>
+					<div class="fw-bold">EBOOKSTORE</div>
+					<small class="text-white-50">Admin Panel</small>
+				</div>
+			</div>
+
+			<div class="py-2">
+				<ul class="nav flex-column px-3 gap-1">
+					<li class="nav-item">
+						<a class="nav-link d-flex align-items-center rounded py-2 px-3 @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Book" ? "active" : "text-white-50")"
+						   asp-area="Admin" asp-controller="Book" asp-action="Index">
+							<i class="bi bi-book me-3"></i>
+							<span>Book</span>
+							<span class="ms-auto"><i class="bi bi-chevron-right"></i></span>
+						</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link d-flex align-items-center rounded py-2 px-3 @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Genre" ? "active" : "text-white-50")"
+						   asp-area="Admin" asp-controller="Genre" asp-action="Index">
+							<i class="bi bi-tags me-3"></i>
+							<span>Genre</span>
+							<span class="ms-auto"><i class="bi bi-chevron-right"></i></span>
+						</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link d-flex align-items-center rounded py-2 px-3 @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Stock" ? "active" : "text-white-50")"
+						   asp-area="Admin" asp-controller="Stock" asp-action="Index">
+							<i class="bi bi-box-seam me-3"></i>
+							<span>Stocks</span>
+							<span class="ms-auto"><i class="bi bi-chevron-right"></i></span>
+						</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link d-flex align-items-center rounded py-2 px-3 @(ViewContext.RouteData.Values["Controller"].ToString() == "Operations" ? "active" : "text-white-50")"
+						   asp-area="Admin" asp-controller="Operations" asp-action="AllOrders">
+							<i class="bi bi-cart me-3"></i>
+							<span>Orders</span>
+							<span class="ms-auto"><i class="bi bi-chevron-right"></i></span>
+						</a>
+					</li>
+				</ul>
+			</div>
+
+			<div class="sidebar-footer">
+				<div class="text-center mb-3">
+					<div class="bg-dark-subtle rounded-circle mx-auto mb-2" style="width: 48px; height: 48px; display: flex; align-items: center; justify-content: center;">
+						<i class="bi bi-person-circle fs-4"></i>
+					</div>
+					<div class="text-white-50 small">@UserManager.GetUserName(User)</div>
+				</div>
+				<div class="d-grid gap-2 px-2">
+					<a class="btn btn-sm btn-outline-light text-start" asp-area="Identity" asp-page="/Account/Manage/Index">
+						<i class="bi bi-person-gear me-2"></i> Profile Settings
+					</a>
+					<form method="post" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+						<button type="submit" class="btn btn-sm btn-danger w-100 text-start">
+							<i class="bi bi-box-arrow-right me-2"></i> Logout
+						</button>
+					</form>
+				</div>
+			</div>
+		</div>
+
+		<!-- Content Wrapper -->
+		<div id="content-wrapper">
+			<!-- Top Navigation -->
+			<nav class="navbar navbar-light bg-white border-bottom shadow-sm navbar-fixed">
+				<div class="container-fluid">
+					<button class="btn btn-sm btn-outline-dark" id="menu-toggle">
+						<i class="bi bi-list" id="menu-icon"></i>
+					</button>
+
+					<div class="d-flex align-items-center">
+						<span class="text-muted">EBookStore Admin Dashboard</span>
+					</div>
+				</div>
+			</nav>
+
+			<!-- Main Content -->
+			<div class="main-content">
+				@RenderBody()
+			</div>
+		</div>
+	</div>
+
+	<script src="~/lib/jquery/dist/jquery.min.js"></script>
+	<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+	<script src="~/js/site.js" asp-append-version="true"></script>
+
+	<script>
+		// Toggle menu function
+		let toggleMenu = document.getElementById("menu-toggle");
+		let menuIcon = document.getElementById("menu-icon");
+
+		toggleMenu.addEventListener("click", function() {
+			document.getElementById("wrapper").classList.toggle("toggled");
+
+			// Toggle icon class
+			if (menuIcon.classList.contains("bi-list")) {
+				menuIcon.classList.replace("bi-list", "bi-x");
+			} else {
+				menuIcon.classList.replace("bi-x", "bi-list");
+			}
+		});
+
+		// Auto-collapse sidebar on small screens
+		function checkWidth() {
+			if (window.innerWidth < 768) {
+				document.getElementById("wrapper").classList.add("toggled");
+				if (menuIcon) {
+					menuIcon.classList.replace("bi-x", "bi-list");
+				}
+			} else {
+				document.getElementById("wrapper").classList.remove("toggled");
+				if (menuIcon) {
+					menuIcon.classList.replace("bi-list", "bi-x");
+				}
+			}
+		}
+
+		// Check width on page load
+		window.addEventListener('load', checkWidth);
+
+		// Check width on resize
+		window.addEventListener('resize', checkWidth);
+	</script>
+
+	@await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

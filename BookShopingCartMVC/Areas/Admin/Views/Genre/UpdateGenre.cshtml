@@ -1,0 +1,72 @@
+﻿@model GenreDto
+@{
+	ViewData["Title"] = "Update Genre";
+}
+
+<div class="container mt-4">
+	<div class="row">
+		<div class="col-md-8 offset-md-2">
+			<div class="card shadow-sm">
+				<div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+					<h3 class="mb-0">Update Genre</h3>
+					<a href="@Url.Action("Index", "Genre")" class="btn btn-light btn-sm">
+						<i class="bi bi-arrow-left"></i> Back to List
+					</a>
+				</div>
+				<div class="card-body">
+					<form asp-controller="Genre" asp-action="UpdateGenre" method="post" id="updateGenreForm" class="needs-validation" novalidate>
+						<input type="hidden" asp-for="Id" />
+
+						<div class="mb-3">
+							<label asp-for="GenreName" class="form-label">Genre Name</label>
+							<div class="input-group">
+								<span class="input-group-text">
+									<i class="bi bi-tag"></i>
+								</span>
+								<input asp-for="GenreName" class="form-control" required
+									   placeholder="Enter genre name"
+									   minlength="2" maxlength="50" />
+							</div>
+							<span asp-validation-for="GenreName" class="text-danger"></span>
+							<div class="form-text">Genre name must be between 2 and 50 characters.</div>
+						</div>
+
+						<div class="d-flex justify-content-end gap-2 mt-4">
+							<a href="@Url.Action("Index", "Genre")" class="btn btn-outline-secondary">
+								<i class="bi bi-x-circle"></i> Cancel
+							</a>
+							<button type="submit" class="btn btn-primary">
+								<i class="bi bi-check2-circle"></i> Update Genre
+							</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+@section Scripts {
+	<script>
+		// Client-side validation
+		document.addEventListener('DOMContentLoaded', function() {
+			const form = document.getElementById('updateGenreForm');
+
+			form.addEventListener('submit', function(event) {
+				if (!form.checkValidity()) {
+					event.preventDefault();
+					event.stopPropagation();
+				}
+
+				form.classList.add('was-validated');
+			});
+
+			// Focus on the name input when the page loads
+			document.getElementById('Name').focus();
+		});
+	</script>
+
+	@{
+		await Html.RenderPartialAsync("_ValidationScriptsPartial");
+	}
+}

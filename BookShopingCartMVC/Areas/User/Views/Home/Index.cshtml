@@ -1,0 +1,153 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject UserManager<IdentityUser> userManager
+@* @inject SignInManager<IdentityUser> signInManager *@
+@{
+	ViewData["Title"] = "Dashboard";
+}
+
+<div class="container py-4">
+	<!-- Welcome Section -->
+	<div class="row mb-4">
+		<div class="col">
+			<div class="card border-0 bg-primary text-white rounded-4 shadow">
+				<div class="card-body p-4">
+					<div class="row align-items-center">
+						<div class="col-md-8">
+							<h1 class="display-6 fw-bold mb-2">Welcome back, @userManager.GetUserName(User)!</h1>
+							<p class="mb-0 opacity-75">What would you like to read today?</p>
+						</div>
+						<div class="col-md-4 d-none d-md-block text-end">
+							<i class="bi bi-book-half display-1 opacity-50"></i>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Stats Section -->
+	<div class="row g-3 mb-4">
+		<div class="col-12 col-md-6">
+			<a asp-area="User" asp-controller="Cart" asp-action="GetUserCart" class="text-decoration-none">
+				<div class="card border-0 rounded-4 shadow-sm h-100 action-card">
+					<div class="card-body p-3">
+						<div class="d-flex align-items-center">
+							<div class="icon-wrapper rounded-circle bg-success-subtle p-2 me-3">
+								<i class="bi bi-cart fs-4 text-success"></i>
+							</div>
+							<div>
+								@* total cart view bag *@
+								<h2 class="fs-4 fw-bold mb-0">@ViewBag.totalCart</h2>
+								<p class="text-muted small mb-0">In Cart</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</a>
+		</div>
+		<div class="col-12 col-md-6">
+			<a asp-area="User" asp-controller="UserLike" asp-action="Favourite" class="text-decoration-none">
+				<div class="card border-0 rounded-4 shadow-sm h-100 action-card">
+					<div class="card-body p-3">
+						<div class="d-flex align-items-center">
+							<div class="icon-wrapper rounded-circle bg-danger-subtle p-2 me-3">
+								<i class="bi bi-heart fs-4 text-danger"></i>
+							</div>
+							<div>
+								@* total favourite bag *@
+								<h2 class="fs-4 fw-bold mb-0">@ViewBag.favourite </h2>
+								<p class="text-muted small mb-0">Favourite</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</a>
+		</div>
+
+	</div>
+
+	<!-- Quick Actions -->
+	<div class="row mb-4">
+		<div class="col-12">
+			<h2 class="fs-4 fw-bold mb-3">Quick Actions</h2>
+			<div class="row g-3">
+				<div class="col-6 col-md-3">
+					<a asp-area="User" asp-controller="Home" asp-action="Books" class="text-decoration-none">
+						<div class="card border-0 rounded-4 shadow-sm h-100 action-card">
+							<div class="card-body p-3 text-center">
+								<div class="icon-wrapper rounded-circle bg-primary-subtle p-3 mx-auto mb-3">
+									<i class="bi bi-book fs-3 text-primary"></i>
+								</div>
+								<h3 class="fs-5 fw-semibold mb-0">Browse Books</h3>
+							</div>
+						</div>
+					</a>
+				</div>
+				<div class="col-6 col-md-3">
+					<a asp-area="User" asp-controller="Cart" asp-action="GetUserCart" class="text-decoration-none">
+						<div class="card border-0 rounded-4 shadow-sm h-100 action-card">
+							<div class="card-body p-3 text-center">
+								<div class="icon-wrapper rounded-circle bg-success-subtle p-3 mx-auto mb-3">
+									<i class="bi bi-cart-check fs-3 text-success"></i>
+								</div>
+								<h3 class="fs-5 fw-semibold mb-0">View Cart</h3>
+							</div>
+						</div>
+					</a>
+				</div>
+				<div class="col-6 col-md-3">
+					<a asp-area="User" asp-controller="UserOrder" asp-action="UserOrders" class="text-decoration-none">
+						<div class="card border-0 rounded-4 shadow-sm h-100 action-card">
+							<div class="card-body p-3 text-center">
+								<div class="icon-wrapper rounded-circle bg-info-subtle p-3 mx-auto mb-3">
+									<i class="bi bi-bag fs-3 text-info"></i>
+								</div>
+								<h3 class="fs-5 fw-semibold mb-0">My Orders</h3>
+							</div>
+						</div>
+					</a>
+				</div>
+				<div class="col-6 col-md-3">
+					<a asp-area="Identity" asp-controller="Account" asp-action="Manage" class="text-decoration-none">
+						<div class="card border-0 rounded-4 shadow-sm h-100 action-card">
+							<div class="card-body p-3 text-center">
+								<div class="icon-wrapper rounded-circle bg-secondary-subtle p-3 mx-auto mb-3">
+									<i class="bi bi-person-gear fs-3 text-secondary"></i>
+								</div>
+								<h3 class="fs-5 fw-semibold mb-0">Profile</h3>
+							</div>
+						</div>
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<style>
+	.action-card {
+		transition: transform 0.2s, box-shadow 0.2s;
+	}
+
+		.action-card:hover {
+			transform: translateY(-5px);
+			box-shadow: 0 .5rem 1rem rgba(0,0,0,.15) !important;
+		}
+
+	.icon-wrapper {
+		width: 60px;
+		height: 60px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.book-card {
+		transition: transform 0.2s;
+		border-radius: 0.75rem;
+		overflow: hidden;
+	}
+
+		.book-card:hover {
+			transform: translateY(-5px);
+		}
+</style>
