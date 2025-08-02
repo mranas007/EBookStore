@@ -3,8 +3,12 @@
 @if (!String.IsNullOrEmpty(Model))
 {
     var statusMessageClass = Model.StartsWith("Error") ? "danger" : "success";
-    <div class="alert alert-@statusMessageClass alert-dismissible" role="alert">
+    var statusMessageTitle = Model.StartsWith("Error") ? "Error" : "Success";
+    var statusMessageIcon = Model.StartsWith("Error") ? "bi-exclamation-triangle-fill" : "bi-check-circle-fill";
+
+    <div class="alert alert-@statusMessageClass alert-dismissible fade show" role="alert">
+        <i class="bi @statusMessageIcon me-2"></i>
+        <strong>@statusMessageTitle:</strong> @Model
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        @Model
     </div>
 }
