@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using BookShopingCartMVC.Repository.IRepository;
 using BookShopingCartMVC.Services.IServices;
 using BookShopingCartMVC.Services;
+using Microsoft.AspNetCore.Identity.UI.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -24,6 +25,7 @@ builder.Services.AddScoped<IUserOrderRepository, UserOrderRepository>();
 builder.Services.AddScoped<IStockRepository, StockRepository>();
 builder.Services.AddScoped<IFileServices, FileServices>();
 builder.Services.AddScoped<ILikeRepository, LikeRepository>();
+builder.Services.AddScoped<IEmailSender, EmailSender>();
 builder.Services.AddSingleton<InvoiceRenderingService>();
 
 var app = builder.Build();

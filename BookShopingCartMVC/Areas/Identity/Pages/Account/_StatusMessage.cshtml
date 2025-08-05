@@ -5,10 +5,22 @@
     var statusMessageClass = Model.StartsWith("Error") ? "danger" : "success";
     var statusMessageTitle = Model.StartsWith("Error") ? "Error" : "Success";
     var statusMessageIcon = Model.StartsWith("Error") ? "bi-exclamation-triangle-fill" : "bi-check-circle-fill";
-
-    <div class="alert alert-@statusMessageClass alert-dismissible fade show" role="alert">
-        <i class="bi @statusMessageIcon me-2"></i>
-        <strong>@statusMessageTitle:</strong> @Model
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    var statusMessageBg = Model.StartsWith("Error") ? "#fff2f2" : "#f0fff0";
+    var statusMessageBorder = Model.StartsWith("Error") ? "#ffcccc" : "#c3e6cb";
+<div class="container container py-5">
+    <div class="alert alert-@statusMessageClass alert-dismissible fade show shadow-sm border" 
+         role="alert" 
+         style="background-color: @statusMessageBg; border-color: @statusMessageBorder; border-radius: 8px; padding: 1rem 1.25rem;">
+        <div class="d-flex align-items-center">
+            <i class="bi @statusMessageIcon me-3" style="font-size: 1.25rem; color: @(Model.StartsWith("Error") ? "#dc3545" : "#198754");"></i>
+            <div>
+                <strong class="me-1">@statusMessageTitle</strong>
+                <span>@Model</span>
+            </div>
+        </div>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" 
+                style="position: absolute; top: 50%; transform: translateY(-50%); right: 1rem;"></button>
     </div>
+</div>
+
 }

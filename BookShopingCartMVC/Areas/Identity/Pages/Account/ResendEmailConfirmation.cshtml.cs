@@ -64,7 +64,7 @@ namespace BookShopingCartMVC.Areas.Identity.Pages.Account
             var user = await _userManager.FindByEmailAsync(Input.Email);
             if (user == null)
             {
-                ModelState.AddModelError(string.Empty, "Verification email sent. Please check your email.");
+                ModelState.AddModelError(string.Empty, "User doesn't exist please register a new Account.");
                 return Page();
             }
 
@@ -76,10 +76,28 @@ namespace BookShopingCartMVC.Areas.Identity.Pages.Account
                 pageHandler: null,
                 values: new { userId = userId, code = code },
                 protocol: Request.Scheme);
+            string htmlMsg = $@"
+                    <div style='font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 5px;'>
+                        <h2 style='color: #2c3e50; text-align: center;'>Welcome to BookShoping!</h2>
+                        <div style='background-color: #f8f9fa; padding: 20px; border-radius: 5px; margin: 15px 0;'>
+                            <p style='color: #34495e; font-size: 16px; line-height: 1.5;'>
+                                Thank you for registering with us. To complete your registration and activate your account, please click the button below:
+                            </p>
+                            <div style='text-align: center; margin: 25px 0;'>
+                                <a href='{HtmlEncoder.Default.Encode(callbackUrl)}' 
+                                   style='background-color: #3498db; color: white; padding: 12px 25px; text-decoration: none; border-radius: 5px; font-weight: bold;'>
+                                    Confirm Your Account
+                                </a>
+                            </div>
+                        </div>
+                        <p style='color: #95a5a6; font-size: 12px; text-align: center; margin-top: 20px;'>
+                            This is an automated message, please do not reply to this email.
+                        </p>
+                    </div>";
             await _emailSender.SendEmailAsync(
                 Input.Email,
                 "Confirm your email",
-                $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                htmlMsg);
 
             ModelState.AddModelError(string.Empty, "Verification email sent. Please check your email.");
             return Page();

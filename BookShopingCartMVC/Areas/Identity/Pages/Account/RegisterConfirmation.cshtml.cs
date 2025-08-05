@@ -85,11 +85,6 @@ namespace BookShopingCartMVC.Areas.Identity.Pages.Account
                                     Confirm Your Account
                                 </a>
                             </div>
-                            <p style='color: #7f8c8d; font-size: 14px; text-align: center;'>
-                                If the button doesn't work, you can copy and paste this link into your browser:
-                                <br>
-                                <span style='color: #3498db;'>{HtmlEncoder.Default.Encode(EmailConfirmationUrl)}</span>
-                            </p>
                         </div>
                         <p style='color: #95a5a6; font-size: 12px; text-align: center; margin-top: 20px;'>
                             This is an automated message, please do not reply to this email.
@@ -99,7 +94,7 @@ namespace BookShopingCartMVC.Areas.Identity.Pages.Account
                 email,
                 "Confirm your email",
                 htmlMsg
-             );
+            );
 
             //}
 
