@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Text.Json;
 using BookShopingCartMVC.Repository.IRepository;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -33,11 +34,47 @@ namespace BookShopingCartMVC.Areas.Guest.Controllers
             return View();
         }
 
-        public async Task<IActionResult> BooksCollection()
+        public async Task<IActionResult> BooksCollection(string sterm = "", int genreId = 0)
         {
-            var books = await _unitOfWork.Book.GetBooksAsync();
-            return View(books);
+            IEnumerable<Book> books = await _unitOfWork.Book.GetAllAsync(sterm, genreId);
+            IEnumerable<Genre> genres = await _unitOfWork.Genre.GetAllAsync();
+            BookDisplayViewModel bookModel = new BookDisplayViewModel
+            {
+                Books = books,
+                Genres = genres,
+                STerm = sterm,
+                GenreId = genreId
+            };
+            return View(bookModel);
+
+            //var options = new JsonSerializerOptions
+            //{
+            //    ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve,
+            //    MaxDepth = 64
+            //};
+            //string jsonString = JsonSerializer.Serialize(books, options);
+            //return Ok(jsonString);
         }
+
+        public async Task<IActionResult> BookDetails(int id)
+        {
+            try
+            {
+                var book = await _unitOfWork.Book.GetByIdAsync(id);
+                return View(book);
+            }
+            catch (Exception ex)
+            {
+                var exception = new
+                {
+                    Message = ex.Message,
+                    Success = false,
+                    ExceptionType = ex.GetType().Name
+                };
+                return BadRequest(exception);
+            }
+        }
+
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });

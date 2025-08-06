@@ -1,0 +1,96 @@
+﻿@model BookShopingCartMVC.Models.Book
+@{
+    ViewData["Title"] = "Book Details";
+}
+<div class="container py-5">
+    <div class="row">
+        <!-- Book Image Section -->
+        <div class="col-lg-5 mb-4 mb-lg-0">
+            <div class="bg-light rounded-3 d-flex justify-content-center align-items-center p-3" style="min-height: 500px;">
+                @if (!string.IsNullOrEmpty(Model?.Image))
+                {
+                    <img src="@Url.Content(Model.Image)" alt="@(Model?.BookName ?? "Book")" class="img-fluid rounded-3 shadow" />
+                }
+                else
+                {
+                    <div class="text-center text-muted">
+                        <i class="bi bi-book fs-1"></i>
+                        <p>No image available</p>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <!-- Book Details Section -->
+        @if (Model != null)
+        {
+            <div class="col-lg-7">
+                <div class="ps-lg-4">
+                    <h5 class="fw-bold my-3 text-primary">Book Details</h5>
+                    <!-- Book Title and Author -->
+                    <h2 class="fw-bold mb-2">@Model.BookName</h2>
+                    <h5 class="text-muted mb-4">by <span class="fw-medium">@Model.AuthorName</span></h5>
+
+                    <!-- Price and Genre -->
+                    <div class="d-flex align-items-center mb-4">
+                        <h3 class="text-primary mb-0 me-4">$@Model.Price.ToString("0.00")</h3>
+                        @if (Model.Genre != null)
+                        {
+                            <span class="badge bg-secondary p-2">@Model.Genre.GenreName</span>
+                        }
+                    </div>
+
+                    <!-- Availability -->
+                    @if (Model.Stock != null && Model.Stock.Quantity > 0)
+                    {
+                        <div class="mb-4">
+                            <span class="badge bg-success p-2 mb-2">In Stock</span>
+                            <p class="mb-0">Available: <strong>@Model.Stock.Quantity</strong> copies</p>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="mb-4">
+                            <span class="badge bg-danger p-2">Out of Stock</span>
+                        </div>
+                    }
+
+                    <!-- Description -->
+                    <div class="mb-4">
+                        <h5 class="fw-bold mb-3">Description</h5>
+                        <p class="text-muted">@Model.Description</p>
+                    </div>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="col-lg-7">
+                <div class="alert alert-warning">
+                    Book details are not available.
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function incrementQuantity() {
+            var input = document.getElementById('quantity');
+            var max = parseInt(input.getAttribute('max'));
+            var value = parseInt(input.value);
+            if (value < max) {
+                input.value = value + 1;
+            }
+        }
+
+        function decrementQuantity() {
+            var input = document.getElementById('quantity');
+            var value = parseInt(input.value);
+            if (value > 1) {
+                input.value = value - 1;
+            }
+        }
+    </script>
+}

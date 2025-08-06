@@ -67,78 +67,6 @@
 	</div>
 </section>
 
-<!-- Featured Books Section -->
-<section class="py-5">
-	<div class="container py-5">
-		<h2 class="display-6 fw-bold text-center mb-5">Bestselling Books</h2>
-		<div class="row g-4">
-			<!-- Book 1 -->
-			<div class="col-lg-3 col-md-6">
-				<div class="card h-100 shadow-sm">
-					<img src="/api/placeholder/400/600" class="card-img-top" alt="Book Cover">
-					<div class="card-body">
-						<span class="badge bg-success mb-2">Bestseller</span>
-						<h5 class="card-title fw-bold">The Midnight Library</h5>
-						<p class="card-text text-muted">Matt Haig</p>
-						<div class="d-flex justify-content-between align-items-center">
-							<span class="fw-bold text-primary">$12.99</span>
-							<a href="#" class="btn btn-sm btn-outline-primary">Add to Cart</a>
-						</div>
-					</div>
-				</div>
-			</div>
-			<!-- Book 2 -->
-			<div class="col-lg-3 col-md-6">
-				<div class="card h-100 shadow-sm">
-					<img src="/api/placeholder/400/600" class="card-img-top" alt="Book Cover">
-					<div class="card-body">
-						<span class="badge bg-danger mb-2">New Release</span>
-						<h5 class="card-title fw-bold">Atomic Habits</h5>
-						<p class="card-text text-muted">James Clear</p>
-						<div class="d-flex justify-content-between align-items-center">
-							<span class="fw-bold text-primary">$14.99</span>
-							<a href="#" class="btn btn-sm btn-outline-primary">Add to Cart</a>
-						</div>
-					</div>
-				</div>
-			</div>
-			<!-- Book 3 -->
-			<div class="col-lg-3 col-md-6">
-				<div class="card h-100 shadow-sm">
-					<img src="/api/placeholder/400/600" class="card-img-top" alt="Book Cover">
-					<div class="card-body">
-						<span class="badge bg-primary mb-2">Popular</span>
-						<h5 class="card-title fw-bold">Educated</h5>
-						<p class="card-text text-muted">Tara Westover</p>
-						<div class="d-flex justify-content-between align-items-center">
-							<span class="fw-bold text-primary">$11.99</span>
-							<a href="#" class="btn btn-sm btn-outline-primary">Add to Cart</a>
-						</div>
-					</div>
-				</div>
-			</div>
-			<!-- Book 4 -->
-			<div class="col-lg-3 col-md-6">
-				<div class="card h-100 shadow-sm">
-					<img src="/api/placeholder/400/600" class="card-img-top" alt="Book Cover">
-					<div class="card-body">
-						<span class="badge bg-warning text-dark mb-2">Featured</span>
-						<h5 class="card-title fw-bold">Dune</h5>
-						<p class="card-text text-muted">Frank Herbert</p>
-						<div class="d-flex justify-content-between align-items-center">
-							<span class="fw-bold text-primary">$9.99</span>
-							<a href="#" class="btn btn-sm btn-outline-primary">Add to Cart</a>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="text-center mt-5">
-			<a href="#" class="btn btn-primary btn-lg">View All Books</a>
-		</div>
-	</div>
-</section>
-
 <!-- Why Choose Us Section -->
 <section class="py-5 bg-light">
 	<div class="container py-5">
@@ -262,7 +190,7 @@
 				<p class="lead mb-lg-0">Join thousands of happy readers today. Sign up and get 10% off your first purchase!</p>
 			</div>
 			<div class="col-lg-4 d-flex justify-content-center justify-content-lg-end">
-				<a href="#" class="btn btn-light btn-lg fw-bold">Sign Up Now</a>
+				<a asp-action="Register" asp-controller="Account" asp-area="Identity" class="btn btn-light btn-lg fw-bold">Register Now</a>
 			</div>
 		</div>
 	</div>
