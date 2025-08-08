@@ -2,6 +2,6 @@
 {
     public interface IPdfGenerator
     {
-        byte[] GeneratePdfForOrderList(string htmlContent);
+        byte[] GeneratePdfForOrderList(Order orderDetails);
     }
 }

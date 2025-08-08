@@ -4,6 +4,9 @@ using BookShopingCartMVC.Services.IServices;
 using BookShopingCartMVC.Services;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using System.Text.Json.Serialization;
+using QuestPDF.Infrastructure;
+
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -13,7 +16,6 @@ builder.Services.AddControllersWithViews()
         options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
         options.JsonSerializerOptions.WriteIndented = true; // Optional: for better readability
     });
-
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
@@ -35,6 +37,8 @@ builder.Services.AddScoped<ILikeRepository, LikeRepository>();
 builder.Services.AddScoped<IEmailSender, EmailSender>();
 builder.Services.AddScoped<IPdfGenerator, PdfGenerator>();
 
+// Register QuestPDF license in your Application_Start event or similar
+QuestPDF.Settings.License = LicenseType.Community;
 var app = builder.Build();
 
 // Seed the default Data into DB.
