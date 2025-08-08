@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Order>
+﻿@model Orders_StatusesViewModel
 
 @{
 	ViewData["Title"] = "Order Management";
@@ -6,38 +6,46 @@
 
 <div class="container-fluid px-4 mt-4">
 	<div class="card mb-4">
-		@* ----------------------------------- fiter *@
-		<div class="card-header d-flex justify-content-between align-items-center">
-			<div>
-				<i class="bi bi-cart3 me-1"></i>
-				Order Management
-			</div>
-			<div>
-				<button class="btn btn-sm btn-outline-primary" id="refreshOrdersBtn">
-					<i class="bi bi-arrow-clockwise"></i> Refresh
-				</button>
-				<div class="btn-group ms-2">
-					<button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown">
-						<i class="bi bi-funnel"></i> Filter
-					</button>
-					<ul class="dropdown-menu dropdown-menu-end">
-						<li><a class="dropdown-item filter-option" data-status="all" href="#">All Orders</a></li>
-						<li><hr class="dropdown-divider"></li>
-						<li><a class="dropdown-item filter-option" data-status="pending" href="#">Pending</a></li>
-						<li><a class="dropdown-item filter-option" data-status="processing" href="#">Processing</a></li>
-						<li><a class="dropdown-item filter-option" data-status="shipped" href="#">Shipped</a></li>
-						<li><a class="dropdown-item filter-option" data-status="delivered" href="#">Delivered</a></li>
-						<li><a class="dropdown-item filter-option" data-status="cancelled" href="#">Cancelled</a></li>
-						<li><hr class="dropdown-divider"></li>
-						<li><a class="dropdown-item filter-option" data-payment="paid" href="#">Paid Only</a></li>
-						<li><a class="dropdown-item filter-option" data-payment="unpaid" href="#">Unpaid Only</a></li>
-					</ul>
+		@* ----------------------------------- filter form and refresh *@
+		<div class="card-header">
+			<div class="d-flex justify-content-between align-items-center mb-3">
+				<div>
+					<i class="bi bi-cart3 me-1"></i>
+					Order Management
 				</div>
+				<a href="@Url.Action("AllOrders", "Operations")" class="btn btn-sm btn-outline-primary" id="refreshOrdersBtn">
+					<i class="bi bi-arrow-clockwise"></i> Refresh
+				</a>
 			</div>
+
+			<form id="filterForm" method="get" asp-action="AllOrders" asp-controller="Operations" asp-area="Admin" class="row g-3 align-items-end">
+				<div class="col-md-6">
+					<label for="orderStatusFilter" class="form-label visually-hidden">Filter by Status</label>
+					<select class="form-select py-2" name="orderStatus" id="orderStatusFilter">
+						<option value="">All Statuses</option>
+						@if (Model.OrderStatus != null)
+						{
+							@foreach (var orderStatus in Model.OrderStatus)
+							{
+								<option value="@orderStatus.Value" selected="@(orderStatus.Value == Model.Status)">@orderStatus.Text</option>
+							}
+						}
+					</select>
+				</div>
+
+				<div class="col-md-4 d-flex align-items-center gap-2">
+					<button type="submit" class="btn btn-primary px-4 py-2 flex-grow-1">
+						<i class="bi bi-funnel me-2"></i>Filter
+					</button>
+					<a href="@Url.Action("AllOrders", "Operations")" class="btn btn-outline-secondary px-4 py-2">
+						<i class="bi bi-arrow-counterclockwise"></i>
+					</a>
+				</div>
+			</form>
 		</div>
 		<div class="card-body">
 			<div class="table-responsive">
-				@if (Model != null && Model.Count() > 0)
+				@if (Model != null && Model.Orders!.Count() > 0)
 				{
 					<table id="ordersTable" class="table table-striped table-hover border">
 						@* ---------------------------- list header *@
@@ -55,11 +63,11 @@
 						</thead>
 						@* ---------------------------- list body *@
 						<tbody>
-							@foreach (var order in Model)
+							@foreach (var order in Model.Orders!)
 							{
 								<tr class="order-row"
 									data-order-id="@order.Id"
-									data-status="@order.OrderStatus.StatusName.ToLower()"
+									data-status="@order.OrderStatus.StatusName!.ToLower()"
 									data-payment="@(order.IsPaid ? "paid" : "unpaid")">
 									<td><span class="fw-bold">#@order.Id</span></td>
 									<td>@order.CreateDate.ToString("MMM dd, yyyy")</td>
@@ -124,6 +132,8 @@
 														</a>
 													</li>
 													<li><hr class="dropdown-divider"></li>
+
+													@* print PDF for order invoice  *@
 													<li>
 														<button class="dropdown-item text-primary print-invoice-btn" data-order-id="@order.Id">
 															<i class="bi bi-printer me-2"></i>Print Invoice
@@ -193,33 +203,10 @@
 	</div>
 </div>
 
-@* <style> *@
-@* 	<!-- Bootstrap Icons CSS --> *@
-@* 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"> *@
-@* 	<!-- DataTables CSS --> *@
-@* 	<link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet" > *@
-@* </style> *@
 
 @section Scripts {
-	<!-- DataTables JS -->
-	@* <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script> *@
-	@* <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script> *@
 	<script>
 		$(document).ready(function() {
-			// // Initialize DataTable
-			// var ordersTable = $('#ordersTable').DataTable({
-			// 	responsive: true,
-			// 	order: [[1, 'desc']], // Sort by date descending
-			// 	columnDefs: [
-			// 		{ orderable: false, targets: [7] } Disable sorting on actions column
-			// 	],
-			// 	lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
-			// 	language: {
-			// 		search: "_INPUT_",
-			// 		searchPlaceholder: "Search orders..."
-			// 	}
-			// });
-
 			// View Order Details Button Click Handler
 			$('.view-details-btn').on('click', function() {
 				const orderId = $(this).data('order-id');
@@ -260,12 +247,19 @@
 			$('#confirmDeleteBtn').on('click', function() {
 				const orderId = $('#orderIdToDelete').val();
 
-				// Here you would normally send an AJAX request to delete the order
-				// For demonstration, we'll just close the modal
-				$('#deleteOrderModal').modal('hide');
-
-				// Show success notification
-				showNotification('Order deleted successfully', 'success');
+				// Send AJAX request to delete the order
+				$.post('/Admin/Operations/DeleteOrder', { orderId: orderId })
+					.done(function() {
+						$('#deleteOrderModal').modal('hide');
+						showNotification('Order deleted successfully', 'success');
+						// Reload the page after successful deletion
+						setTimeout(function() {
+							window.location.reload();
+						}, 1000);
+					})
+					.fail(function() {
+						showNotification('Failed to delete order', 'error');
+					});
 			});
 
 			// Filter options handler
@@ -328,9 +322,8 @@
 			$('.print-invoice-btn').on('click', function() {
 				const orderId = $(this).data('order-id');
 				// In a real implementation, you might redirect to a print view or open a new window
-				window.open(`/Orders/PrintInvoice/${orderId}`, '_blank');
+				window.open(`/generate-order-pdf/${orderId}`, '_blank');
 			});
-
 			// Refresh Button Handler
 			$('#refreshOrdersBtn').on('click', function() {
 				// In a real implementation, you would reload data from the server

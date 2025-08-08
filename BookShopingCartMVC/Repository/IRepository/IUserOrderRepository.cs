@@ -8,6 +8,7 @@ namespace BookShopingCartMVC.Repository.IRepository
         Task ChangeOrderStatus(UpdateOrderStatusDto model);
         Task TogglePaymentStatus(int orderId);
         Task<Order> GetOrderByIdAsync(int id);
-        Task<IEnumerable<OrderStatus>> GetOrderStatuses( );
+        Task<IEnumerable<OrderStatus>> GetOrderStatuses();
+        Task<Order> GetOrderDetailsByIdAsync(int orderId);
     }
 }

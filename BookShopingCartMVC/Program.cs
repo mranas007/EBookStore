@@ -33,7 +33,7 @@ builder.Services.AddScoped<IStockRepository, StockRepository>();
 builder.Services.AddScoped<IFileServices, FileServices>();
 builder.Services.AddScoped<ILikeRepository, LikeRepository>();
 builder.Services.AddScoped<IEmailSender, EmailSender>();
-builder.Services.AddSingleton<InvoiceRenderingService>();
+builder.Services.AddScoped<IPdfGenerator, PdfGenerator>();
 
 var app = builder.Build();
 

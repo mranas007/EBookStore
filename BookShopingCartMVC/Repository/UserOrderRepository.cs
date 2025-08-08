@@ -42,8 +42,9 @@ namespace BookShopingCartMVC.Repository
             }
 
             return await order.ToListAsync();
-        } // done
+        }
 
+        // chnage shiping order status
         public async Task ChangeOrderStatus(UpdateOrderStatusDto data)
         {
             var order = await _context.Orders.FindAsync(data.OrderId);
@@ -52,8 +53,9 @@ namespace BookShopingCartMVC.Repository
 
             order.OrderStatusId = data.OrderStatusId;
             await _context.SaveChangesAsync();
-        } // done
+        }
 
+        // change the payment paid or not
         public async Task TogglePaymentStatus(int orderId)
         {
             var order = await _context.Orders.FindAsync(orderId);
@@ -62,19 +64,37 @@ namespace BookShopingCartMVC.Repository
 
             order.IsPaid = !order.IsPaid;
             await _context.SaveChangesAsync();
-        } // done
+        }
 
+        // Get order by id
         public async Task<Order> GetOrderByIdAsync(int id)
         {
             var order = await _context.Orders.FirstOrDefaultAsync(a => a.Id == id);
             if (order is null)
                 throw new Exception("Order doesn't Exist!");
             return order;
-        } // done
+        }
+
+        // Get user order details by orderId, including related entities
+        public async Task<Order> GetOrderDetailsByIdAsync(int orderId)
+        {
+            var order = await _context.Orders
+                .Where(a => a.Id == orderId)
+                .Include(a => a.OrderStatus)
+                .Include(a => a.OrderDetail)
+                    .ThenInclude(od => od.Book)
+                        .ThenInclude(b => b.Genre)
+                .FirstOrDefaultAsync();
+
+            if (order == null)
+                throw new Exception($"Order with id: {orderId} not found!");
+
+            return order;
+        }
 
         public async Task<IEnumerable<OrderStatus>> GetOrderStatuses()
         {
             return await _context.OrderStatuses.ToListAsync();
-        } // done
+        }
     }
 }
