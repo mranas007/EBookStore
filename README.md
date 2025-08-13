@@ -39,6 +39,33 @@ EBookStore is a modern e-commerce web application built with ASP.NET Core MVC, d
 
 ## Setup Instructions
 
+### Initial Configuration
+
+1. **Configure Application Settings**
+   - Copy `appsettings.json.example` to `appsettings.json`
+   - Update the connection string in `appsettings.json`:
+     ```json
+     "ConnectionStrings": {
+       "DefaultConnection": "Server=YOUR_SERVER;Database=EBookStore;Trusted_Connection=True;MultipleActiveResultSets=true;TrustServerCertificate=True"
+     }
+     ```
+   - Common connection string formats:
+     - Windows Authentication: `Server=(localdb)\mssqllocaldb;Database=EBookStore;Trusted_Connection=True;MultipleActiveResultSets=true;TrustServerCertificate=True`
+     - SQL Server Authentication: `Server=YOUR_SERVER;Database=EBookStore;User Id=YOUR_USERNAME;Password=YOUR_PASSWORD;MultipleActiveResultSets=true;TrustServerCertificate=True`
+
+2. **Configure Email Settings**
+   - Update email configuration in `appsettings.json`:
+     ```json
+     "EmailSettings": {
+       "SmtpServer": "smtp.gmail.com",
+       "SmtpPort": 587,
+       "SmtpUsername": "your-email@gmail.com",
+       "SmtpPassword": "your-app-password"
+     }
+     ```
+   - For Gmail, use App Password instead of regular password
+   - [How to generate Gmail App Password](https://support.google.com/accounts/answer/185833?hl=en)
+
 ### Using Visual Studio 2022
 
 1. **Clone the Repository**
@@ -50,10 +77,9 @@ EBookStore is a modern e-commerce web application built with ASP.NET Core MVC, d
    - Open `BookShopingCartMVC.sln` in Visual Studio 2022
    - Wait for all dependencies to restore
 
-3. **Configure Database**
-   - Open `appsettings.json`
-   - Update the `DefaultConnection` string with your SQL Server details
-   - In Package Manager Console, run:
+3. **Setup Database**
+   - Open Package Manager Console
+   - Run migration:
      ```bash
      Update-Database
      ```
@@ -64,7 +90,7 @@ EBookStore is a modern e-commerce web application built with ASP.NET Core MVC, d
 
 ### Using Visual Studio Code
 
-1. **Clone the Repository**
+1. **Clone and Setup**
    ```bash
    git clone https://github.com/yourusername/EBookStore.git
    cd EBookStore
@@ -75,19 +101,12 @@ EBookStore is a modern e-commerce web application built with ASP.NET Core MVC, d
    - C# Dev Kit
    - IntelliCode
 
-3. **Restore Dependencies**
+3. **Setup Database**
    ```bash
-   dotnet restore
+   dotnet ef database update
    ```
 
-4. **Configure Database**
-   - Update connection string in `appsettings.json`
-   - Run migrations:
-     ```bash
-     dotnet ef database update
-     ```
-
-5. **Run the Application**
+4. **Run the Application**
    ```bash
    dotnet run
    ```
@@ -112,20 +131,18 @@ EBookStore is a modern e-commerce web application built with ASP.NET Core MVC, d
 - Email: admin@gmail.com
 - Password: Admin@123
 
-## Additional Configuration
+## Security Notes
 
-### Email Settings
-Update `appsettings.json` with your SMTP settings:
-```json
-{
-  "EmailSettings": {
-    "SmtpServer": "smtp.gmail.com",
-    "SmtpPort": 587,
-    "SmtpUsername": "your-email@gmail.com",
-    "SmtpPassword": "your-app-password"
-  }
-}
-```
+1. **Sensitive Data**
+   - Never commit `appsettings.json` with real credentials
+   - Use `appsettings.json.example` as a template
+   - Keep your connection strings and API keys private
+
+2. **Production Deployment**
+   - Use environment variables or secure key vaults
+   - Enable HTTPS
+   - Implement proper security headers
+   - Regular security audits
 
 ## Development Guidelines
 
@@ -138,11 +155,6 @@ Update `appsettings.json` with your SMTP settings:
    - Use async/await for database operations
    - Implement repository pattern
    - Use dependency injection
-
-3. **Security**
-   - Never commit sensitive data
-   - Use user secrets for development
-   - Implement proper authorization
 
 ## License
 

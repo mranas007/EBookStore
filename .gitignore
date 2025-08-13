@@ -9,6 +9,12 @@
 # Uploads directory
 wwwroot/Uploads/
 
+# Application Settings
+appsettings.json
+appsettings.Development.json
+appsettings.*.json
+!appsettings.json.example
+
 # User-specific files
 *.rsuser
 *.suo
