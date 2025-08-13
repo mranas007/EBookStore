@@ -1,6 +1,6 @@
 # EBookStore - ASP.NET Core MVC E-Commerce Application
 
-EBookStore is a modern e-commerce web application built with ASP.NET Core MVC, designed for selling and managing digital books. The application features a clean architecture, role-based authorization, and a responsive user interface.
+EBookStore is a modern e-commerce web application built with ASP.NET Core MVC, designed for selling and managing books. The application features a clean architecture, role-based authorization, and a responsive user interface.
 
 ## Features
 
