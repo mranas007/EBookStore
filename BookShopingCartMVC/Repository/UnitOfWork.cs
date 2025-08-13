@@ -9,7 +9,7 @@ namespace BookShopingCartMVC.Repository
         public IBookRepository Book { get; set; }
         public IGenreRepository Genre { get; set; }
 
-        public UnitOfWork(ApplicationDbContext context, IHttpContextAccessor httpContextAccessor, UserManager<IdentityUser> userManager)
+        public UnitOfWork(ApplicationDbContext context, IHttpContextAccessor httpContextAccessor, UserManager<ApplicationUser> userManager)
         {
             _context = context;
             Book = new BookRepository(context, httpContextAccessor, userManager);

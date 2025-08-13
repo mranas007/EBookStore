@@ -46,7 +46,7 @@ namespace BookShopingCartMVC.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                TempData["error"] = "Genre Couldn't Added!";
+                TempData["error"] = "Genre Couldn't Added: " + ex.Message;
                 return View(genre);
             }
         }
@@ -77,7 +77,7 @@ namespace BookShopingCartMVC.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                TempData["error"] = "Genre Couldn't update!";
+                TempData["error"] = "Genre Couldn't update: " + ex.Message;
                 return View();
             };
         }
@@ -107,7 +107,7 @@ namespace BookShopingCartMVC.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                TempData["error"] = "Genre Couldn't Deleted!";
+                TempData["error"] = "Genre Couldn't Deleted: " + ex.Message;
                 return RedirectToAction(nameof(Index));
             }
         }

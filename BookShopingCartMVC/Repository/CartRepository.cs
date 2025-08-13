@@ -10,10 +10,10 @@ namespace BookShopingCartMVC.Repository
     public class CartRepository : ICartRepository
     {
         private readonly ApplicationDbContext _context;
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly IHttpContextAccessor _httpContextAccessor;
         public CartRepository(ApplicationDbContext context,
-            UserManager<IdentityUser> userManager,
+            UserManager<ApplicationUser> userManager,
             IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
@@ -55,7 +55,7 @@ namespace BookShopingCartMVC.Repository
                         BookId = bookId,
                         ShoppingCartId = shoppingCart.Id,
                         Quantity = quantity,
-                        UnitPrice = book.Id == 0 ? 0 : book.Price
+                        UnitPrice = book!.Id == 0 ? 0 : book!.Price
                     };
                     _context.CartDetails.Add(cartItem);
                 }
@@ -133,15 +133,15 @@ namespace BookShopingCartMVC.Repository
             string userId = GetUserId();
             if (string.IsNullOrEmpty(userId))
                 throw new InvalidOperationException("Invalid User");
-            var shoppingCart = await _context.ShoppingCarts
-                                  .Include(a => a.CartDetails)
+            ShoppingCart? shoppingCart = await _context!.ShoppingCarts
+                                  .Include(a => a.CartDetails!)
                                   .ThenInclude(a => a.Book)
-                                  .ThenInclude(a => a.Stock)
-                                  .Include(a => a.CartDetails)
+                                  .ThenInclude(a => a!.Stock)
+                                  .Include(a => a.CartDetails!)
                                   .ThenInclude(a => a.Book)
-                                  .ThenInclude(a => a.Genre)
+                                  .ThenInclude(a => a!.Genre)
                                   .Where(a => a.UserId == userId).FirstOrDefaultAsync();
-            return shoppingCart;
+            return shoppingCart!;
         }
 
         // Get all Cart Count
@@ -226,14 +226,14 @@ namespace BookShopingCartMVC.Repository
         {
             string userId = GetUserId();
             ShoppingCart? shoppingCart = await _context.ShoppingCarts.FirstOrDefaultAsync(x => x.UserId == userId);
-            return shoppingCart;
+            return shoppingCart!;
         }
 
         // Get the Authenticated User Id
         public string GetUserId()
         {
             var pranciple = _httpContextAccessor.HttpContext?.User;
-            return _userManager.GetUserId(pranciple);
+            return _userManager.GetUserId(pranciple!)!;
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Text.Json;
 using BookShopingCartMVC.Repository.IRepository;
+using BookShopingCartMVC.Common;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,11 +10,11 @@ namespace BookShopingCartMVC.Areas.Guest.Controllers
     [Area("Guest")]
     public class HomeController : Controller
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signManager;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signManager;
         private readonly IUnitOfWork _unitOfWork;
-        public HomeController(UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signManager,
+        public HomeController(UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signManager,
             IUnitOfWork unitOfWork)
         {
             _userManager = userManager;
@@ -21,7 +22,7 @@ namespace BookShopingCartMVC.Areas.Guest.Controllers
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
             if (_signManager.IsSignedIn(User) && User.IsInRole("User"))
             {
@@ -34,16 +35,20 @@ namespace BookShopingCartMVC.Areas.Guest.Controllers
             return View();
         }
 
-        public async Task<IActionResult> BooksCollection(string sterm = "", int genreId = 0)
+        public async Task<IActionResult> BooksCollection(string sterm = "", int genreId = 0, int pageNumber = 1, int pageSize = 20)
         {
-            IEnumerable<Book> books = await _unitOfWork.Book.GetAllAsync(sterm, genreId);
+            PaginationParams paginationParams = new PaginationParams { PageNumber = pageNumber, PageSize = pageSize };
+            IEnumerable<Book> books = await _unitOfWork.Book.GetAllAsync(sterm, genreId, paginationParams);
             IEnumerable<Genre> genres = await _unitOfWork.Genre.GetAllAsync();
             BookDisplayViewModel bookModel = new BookDisplayViewModel
             {
                 Books = books,
                 Genres = genres,
                 STerm = sterm,
-                GenreId = genreId
+                GenreId = genreId,
+                PageNumber = pageNumber,
+                PageSize = pageSize,
+                TotalBooks = await _unitOfWork.Book.GetCountAsync(sterm, genreId)
             };
             return View(bookModel);
 

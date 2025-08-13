@@ -144,7 +144,7 @@
 							<div class="row g-0">
 								<div class="col-4 p-3 d-flex align-items-center justify-content-center">
 									<div class="book-cover-container position-relative">
-										<img src="~/Uploads/@(string.IsNullOrEmpty(item.Book.Image) ? "/images/NoImage.png" : $"/Uploads/{item.Book.Image}")"
+										<img src="~/Uploads/@(string.IsNullOrEmpty(item!.Book!.Image) ? "/images/NoImage.png" : $"/Uploads/{item.Book.Image}")"
 											 alt="@item.Book.BookName"
 											 class="img-fluid rounded-3 shadow-sm"
 											 style="max-height: 130px; object-fit: cover;" />
@@ -162,7 +162,7 @@
 									<div class="card-body p-3">
 										<div class="d-flex flex-column h-100">
 											<div>
-												<h5 class="card-title mb-1 fs-6 fw-semibold text-truncate">@item.Book.BookName</h5>
+												<h5 class="card-title mb-1 fs-6 fw-semibold text-truncate">@item!.Book!.BookName</h5>
 												<div class="d-flex align-items-center mb-2">
 													<span class="badge bg-light text-secondary me-2">
 														<i class="bi bi-bookmark-fill me-1 small"></i>@item.Book.Genre.GenreName

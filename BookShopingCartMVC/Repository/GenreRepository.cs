@@ -12,7 +12,7 @@ namespace BookShopingCartMVC.Repository
 
         public async Task AddAsync(Genre genre)
         {
-            _context.Genres.AddAsync(genre);
+            await _context.Genres.AddAsync(genre);
             await _context.SaveChangesAsync();
         }
 
@@ -31,7 +31,8 @@ namespace BookShopingCartMVC.Repository
 
         public async Task<Genre> GetByIdAsync(int id)
         {
-            return await _context.Genres.FindAsync(id);
+            Genre? genre = await _context.Genres.FindAsync(id);
+            return genre!;
         }
 
         public async Task<IEnumerable<Genre>> GetAllAsync()

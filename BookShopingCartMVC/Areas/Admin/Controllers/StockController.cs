@@ -47,7 +47,7 @@ namespace BookShopingCartMVC.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                TempData["error"] = "Something Went Wrong!";
+                TempData["error"] = "Something Went Wrong: " + ex.Message;
             }
             return RedirectToAction(nameof(Index));
         }

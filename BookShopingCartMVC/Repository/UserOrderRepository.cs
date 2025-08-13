@@ -9,10 +9,10 @@ namespace BookShopingCartMVC.Repository
     public class UserOrderRepository : IUserOrderRepository
     {
         private readonly ApplicationDbContext _context;
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly IHttpContextAccessor _httpContextAccessor;
         public UserOrderRepository(ApplicationDbContext context,
-            UserManager<IdentityUser> userManager,
+            UserManager<ApplicationUser> userManager,
             IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
@@ -23,7 +23,7 @@ namespace BookShopingCartMVC.Repository
         public string GetUserId()
         {
             var pranciple = _httpContextAccessor.HttpContext?.User;
-            return _userManager.GetUserId(pranciple) ?? string.Empty;
+            return _userManager.GetUserId(pranciple!) ?? string.Empty;
         }
 
         public async Task<IEnumerable<Order>> UserOrderAsync(bool getAll = false)

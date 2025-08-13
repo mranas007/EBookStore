@@ -3,6 +3,7 @@ using BookShopingCartMVC.Repository.IRepository;
 using BookShopingCartMVC.Services.IServices;
 using BookShopingCartMVC.Services;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using BookShopingCartMVC.Models;
 using System.Text.Json.Serialization;
 using QuestPDF.Infrastructure;
 
@@ -21,7 +22,7 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
 
 builder.Services
-    .AddIdentity<IdentityUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddIdentity<ApplicationUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultUI()
     .AddDefaultTokenProviders();
@@ -34,6 +35,7 @@ builder.Services.AddScoped<IUserOrderRepository, UserOrderRepository>();
 builder.Services.AddScoped<IStockRepository, StockRepository>();
 builder.Services.AddScoped<IFileServices, FileServices>();
 builder.Services.AddScoped<ILikeRepository, LikeRepository>();
+builder.Services.AddScoped<IApplicationUserRepository, ApplicationUserRepository>();
 builder.Services.AddScoped<IEmailSender, EmailSender>();
 builder.Services.AddScoped<IPdfGenerator, PdfGenerator>();
 

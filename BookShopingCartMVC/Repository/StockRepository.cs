@@ -41,7 +41,7 @@ namespace BookShopingCartMVC.Repository
                                 on book.Id equals stock.BookId
                                 into book_stock
                                 from bookStock in book_stock.DefaultIfEmpty()
-                                where string.IsNullOrWhiteSpace(sterm) || book.BookName.ToLower().Contains(sterm.ToLower())
+                                where string.IsNullOrWhiteSpace(sterm) || book.BookName!.ToLower().Contains(sterm.ToLower())
                                 select new StockViewModel
                                 {
                                     BookId = book.Id,

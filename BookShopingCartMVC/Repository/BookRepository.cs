@@ -1,4 +1,5 @@
-﻿using BookShopingCartMVC.Repository.IRepository;
+using BookShopingCartMVC.Common;
+using BookShopingCartMVC.Repository.IRepository;
 using Microsoft.AspNetCore.Identity;
 
 namespace BookShopingCartMVC.Repository
@@ -7,10 +8,10 @@ namespace BookShopingCartMVC.Repository
     {
         private readonly ApplicationDbContext _context;
         private readonly IHttpContextAccessor _httpContextAccessor;
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<ApplicationUser> _userManager;
         public BookRepository(ApplicationDbContext context,
             IHttpContextAccessor httpContextAccessor,
-            UserManager<IdentityUser> userManager)
+            UserManager<ApplicationUser> userManager)
         {
             _context = context;
             _userManager = userManager;
@@ -32,51 +33,40 @@ namespace BookShopingCartMVC.Repository
             await _context.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<Book>> GetAllAsync(string sTerm = "", int genreId = 0)
+        public async Task<IEnumerable<Book>> GetAllAsync(string sTerm = "", int genreId = 0, PaginationParams? paginationParams = null)
         {
             sTerm = sTerm?.ToLower() ?? string.Empty;
-
-            // Start with the books and join with genres
-            var query = from book in _context.Books
-                        join genre in _context.Genres on book.GenreId equals genre.Id
-                        where
-                            (string.IsNullOrWhiteSpace(sTerm) || (book.BookName != null && book.BookName.ToLower().Contains(sTerm)))
-                            && (genreId == 0 || book.GenreId == genreId)
-                        select new
-                        {
-                            Book = book,
-                            Genre = genre
-                        };
-
-            // Execute the initial query to get the books
-            var bookData = await query.ToListAsync();
             var userId = GetUserId();
-            // Now process the like information
-            var result = new List<Book>();
 
-            foreach (var item in bookData)
+            var query = _context.Books
+                .Include(b => b.Genre)
+                .GroupJoin(_context.Likes.Where(l => l.UserId == userId), // Filter likes by current user
+                           book => book.Id,
+                           like => like.BookId,
+                           (book, likes) => new { Book = book, Likes = likes })
+                .SelectMany(x => x.Likes.DefaultIfEmpty(), // Left join with likes
+                            (x, like) => new Book
+                            {
+                                Id = x.Book.Id,
+                                BookName = x.Book.BookName,
+                                AuthorName = x.Book.AuthorName,
+                                Description = x.Book.Description,
+                                Price = x.Book.Price,
+                                Image = x.Book.Image,
+                                GenreId = x.Book.GenreId,
+                                GenreName = x.Book.Genre!.GenreName,
+                                IsLike = like != null // Check if a like exists for this book by the user
+                            })
+                .Where(b => (string.IsNullOrWhiteSpace(sTerm) || (b.BookName != null && b.BookName.ToLower().Contains(sTerm)))
+                            && (genreId == 0 || b.GenreId == genreId));
+
+            if (paginationParams != null)
             {
-                // Check if there's a like for this book by the current user (if userId is provided)
-                bool isLiked = false;
-                isLiked = await _context.Likes
-                    .AnyAsync(like => like.BookId == item.Book.Id && like.UserId == userId);
-
-                // Create the book object with all needed properties
-                result.Add(new Book
-                {
-                    Id = item.Book.Id,
-                    BookName = item.Book.BookName,
-                    AuthorName = item.Book.AuthorName,
-                    Description = item.Book.Description,
-                    Price = item.Book.Price,
-                    Image = item.Book.Image,
-                    GenreId = item.Book.GenreId,
-                    GenreName = item.Genre.GenreName,
-                    IsLike = isLiked
-                });
+                query = query.Skip((paginationParams.PageNumber - 1) * paginationParams.PageSize)
+                             .Take(paginationParams.PageSize);
             }
 
-            return result;
+            return await query.ToListAsync();
         }
 
 
@@ -87,7 +77,7 @@ namespace BookShopingCartMVC.Repository
                 Book? book = await _context.Books
                   .Include(g => g.Genre)
                   .FirstOrDefaultAsync(x => x.Id == id);
-                return book;
+                return book!;
 
             }
             catch (Exception ex)
@@ -108,10 +98,21 @@ namespace BookShopingCartMVC.Repository
             await _context.SaveChangesAsync();
         }
 
+        public async Task<int> GetCountAsync(string sTerm = "", int genreId = 0)
+        {
+            sTerm = sTerm?.ToLower() ?? string.Empty;
+
+            var query = _context.Books
+                .Where(b => (string.IsNullOrWhiteSpace(sTerm) || (b.BookName != null && b.BookName.ToLower().Contains(sTerm)))
+                            && (genreId == 0 || b.GenreId == genreId));
+
+            return await query.CountAsync();
+        }
+
         private string GetUserId()
         {
             var pranciple = _httpContextAccessor.HttpContext?.User;
-            return _userManager.GetUserId(pranciple);
+            return _userManager.GetUserId(pranciple!)!;
         }
 
     }

@@ -17,14 +17,17 @@ namespace BookShopingCartMVC.Models.DTOs
         [MaxLength(40)]
         [DisplayName("Author Name")]
         public string? AuthorName { get; set; }
+
         [Required]
         public double Price { get; set; }
 
         public string? Description { get; set; }
-        public string? Image { get; set; }
+
+        public string? Image { get; set; } // to hold the image path or URL
+        public IFormFile? ImageFile { get; set; } // to hold the uploaded file
+
         [Required]
         public int GenreId { get; set; }
-        public IFormFile? ImageFile { get; set; }
 
         [DisplayName("Genres")]
         public IEnumerable<SelectListItem>? GenreList { get; set; }

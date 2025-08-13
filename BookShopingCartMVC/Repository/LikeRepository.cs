@@ -6,11 +6,11 @@ namespace BookShopingCartMVC.Repository
     public class LikeRepository : ILikeRepository
     {
         private readonly ApplicationDbContext _context;
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
         public LikeRepository(ApplicationDbContext context,
-            UserManager<IdentityUser> userManager,
+            UserManager<ApplicationUser> userManager,
             IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
@@ -86,7 +86,7 @@ namespace BookShopingCartMVC.Repository
         public string GetUserId()
         {
             var pranciple = _httpContextAccessor.HttpContext?.User;
-            return _userManager.GetUserId(pranciple);
+            return _userManager.GetUserId(pranciple!)!;
         }
 
     }

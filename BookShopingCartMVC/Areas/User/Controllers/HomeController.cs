@@ -3,6 +3,7 @@ using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using System.Text.Json;
+using BookShopingCartMVC.Common;
 
 namespace BookShopingCartMVC.Areas.User.Controllers
 {
@@ -15,8 +16,8 @@ namespace BookShopingCartMVC.Areas.User.Controllers
         private readonly ICartRepository _cartRepo;
         private readonly ILikeRepository _likeRepo;
 
-        public HomeController(ILogger<HomeController> logger, 
-            IUnitOfWork unitOfWork, 
+        public HomeController(ILogger<HomeController> logger,
+            IUnitOfWork unitOfWork,
             ICartRepository cartRepository,
             ILikeRepository likeRepository)
         {
@@ -36,9 +37,10 @@ namespace BookShopingCartMVC.Areas.User.Controllers
             return View();
         }
 
-        public async Task<IActionResult> Books(string sterm = "", int genreId = 0)
+        public async Task<IActionResult> Books(string sterm = "", int genreId = 0, int pageNumber = 1, int pageSize = 10)
         {
-            IEnumerable<Book> books = await _unitOfWork.Book.GetAllAsync(sterm, genreId);
+            PaginationParams paginationParams = new PaginationParams { PageNumber = 1, PageSize = 10 };
+            IEnumerable<Book> books = await _unitOfWork.Book.GetAllAsync(sterm, genreId, paginationParams);
             IEnumerable<Genre> genres = await _unitOfWork.Genre.GetAllAsync();
             BookDisplayViewModel bookModel = new BookDisplayViewModel
             {
@@ -49,6 +51,7 @@ namespace BookShopingCartMVC.Areas.User.Controllers
             };
             return View(bookModel);
         }
+        
         public async Task<IActionResult> BookDetails(int id)
         {
             try

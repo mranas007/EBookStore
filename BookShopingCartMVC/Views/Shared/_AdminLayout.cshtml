@@ -1,5 +1,5 @@
 ﻿@using Microsoft.AspNetCore.Identity
-@inject UserManager<IdentityUser> UserManager
+@inject UserManager<ApplicationUser> UserManager
 
 <!DOCTYPE html>
 <html lang="en">
@@ -33,6 +33,14 @@
 			<div class="py-2">
 				<ul class="nav flex-column px-3 gap-1">
 					<li class="nav-item">
+						<a class="nav-link d-flex align-items-center rounded py-2 px-3 @(ViewContext.RouteData.Values["Controller"]?.ToString() == "User" ? "active" : "text-white-50")"
+						   asp-area="Admin" asp-controller="User" asp-action="Index">
+							<i class="bi bi-book me-3"></i>
+							<span>User</span>
+							<span class="ms-auto"><i class="bi bi-chevron-right"></i></span>
+						</a>
+					</li>
+					<li class="nav-item">
 						<a class="nav-link d-flex align-items-center rounded py-2 px-3 @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Book" ? "active" : "text-white-50")"
 						   asp-area="Admin" asp-controller="Book" asp-action="Index">
 							<i class="bi bi-book me-3"></i>
@@ -57,7 +65,7 @@
 						</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link d-flex align-items-center rounded py-2 px-3 @(ViewContext.RouteData.Values["Controller"].ToString() == "Operations" ? "active" : "text-white-50")"
+						<a class="nav-link d-flex align-items-center rounded py-2 px-3 @(ViewContext!.RouteData!.Values["Controller"]?.ToString() == "Operations" ? "active" : "text-white-50")"
 						   asp-area="Admin" asp-controller="Operations" asp-action="AllOrders">
 							<i class="bi bi-cart me-3"></i>
 							<span>Orders</span>

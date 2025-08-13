@@ -6,6 +6,8 @@ namespace BookShopingCartMVC.Services
 {
     public class EmailSender(IConfiguration _configuration, ILogger<EmailSender> logger) : IEmailSender
     {
+        public ILogger<EmailSender> Logger { get; } = logger;
+
         public async Task SendEmailAsync(string email, string subject, string htmlMessage)
         {
             // Validate input parameters

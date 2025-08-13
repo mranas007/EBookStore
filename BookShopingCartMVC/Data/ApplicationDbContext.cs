@@ -20,6 +20,7 @@ namespace BookShopingCartMVC.Data
         public DbSet<OrderStatus> OrderStatuses { get; set; }
         public DbSet<Stock> Stocks { get; set; }
         public DbSet<Like> Likes { get; set; }
+        public DbSet<Models.ApplicationUser> ApplicationUsers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
