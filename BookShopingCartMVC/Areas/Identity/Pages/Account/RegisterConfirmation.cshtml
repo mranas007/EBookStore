@@ -1,36 +1,35 @@
 ﻿@page
 @model RegisterConfirmationModel
 @{
-	ViewData["Title"] = "Registration Confirmation";
+    ViewData["Title"] = "Registration Confirmation";
 }
 
-<div class="min-vh-100">
-	<h1 class="text-center text-primary mb-4 mt-5">@ViewData["Title"]</h1>
-	<div class="card shadow-sm mx-auto" style="max-width: 500px;">
-		<div class="card-body p-4 text-center">
-			<p class="lead mb-3">
-				Thank you for registering! To complete your registration, please check your email and confirm your account.
-			</p>
-			<p class="text-muted">
-				If you don't see the email in a few minutes, please check your spam folder.
-			</p>
-			<a href="/" class="btn btn-primary mt-3">Return to Home</a>
-		</div>
-	</div>
+<div class="container py-5">
+    <div class="card shadow-lg border-0 mx-auto" style="max-width: 600px;">
+        <div class="card-body p-5 text-center">
+            <div class="mb-4">
+                <div class="animation-ctn">
+                    <div class="circle-border">
+                        <div class="circle">
+                            <div class="success-icon">
+                                <i class="bi bi-envelope-check text-success" style="font-size: 48px;"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <h2 class="card-title mb-3 fw-bold text-success">Registration Successful!</h2>
+            <p class="lead mb-3">
+                Thank you for registering! To complete your registration, please check your email and confirm your account.
+            </p>
+            <p class="text-muted mb-4">
+                If you don't see the email in a few minutes, please check your spam folder.
+            </p>
+            <div class="d-grid gap-3 d-sm-flex justify-content-sm-center">
+                <a href="/" class="btn btn-success btn-lg px-4 rounded-pill">
+                    <i class="bi bi-house me-2"></i>Return to Home
+                </a>
+            </div>
+        </div>
+    </div>
 </div>
-@* @{ *@
-@*     if (@Model.DisplayConfirmAccountLink) *@
-@*     { *@
-@* <p> *@
-@*     This app does not currently have a real email sender registered, see <a href="https://aka.ms/aspaccountconf">these docs</a> for how to configure a real email sender. *@
-@*     Normally this would be emailed: <a id="confirm-link" href="@Model.EmailConfirmationUrl">Click here to confirm your account</a> *@
-@* </p> *@
-@*     } *@
-@*     else *@
-@*     { *@
-@* <p> *@
-@*         Please check your email to confirm your account. *@
-@* </p> *@
-@*     } *@
-@* } *@
-

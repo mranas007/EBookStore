@@ -198,3 +198,89 @@ html {
     min-height: 300px;
 }
 
+/*/------------------ Account/RegisterConfirmation (Identity) -----------------------/*/
+
+.success-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: counter-spin .8s linear 0s infinite;
+}
+
+/*/------------------ Cart/OrderSuccess, OrderFailure (User) -----------------------/*/
+.animation-ctn {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.circle-border {
+    width: 150px;
+    height: 150px;
+    padding: 3px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    background: #82ce34;
+    background: linear-gradient(0deg, rgba(130,206,52,0.1) 33%, rgba(130,206,52,1) 100%);
+    animation: spin .8s linear 0s infinite;
+    margin: 0 auto;
+}
+
+.circle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    background-color: white;
+    border-radius: 50%;
+}
+
+.check-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: counter-spin .8s linear 0s infinite;
+}
+
+/* OrderFailure start */
+.circle-border-error {
+    width: 150px;
+    height: 150px;
+    padding: 3px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    background: #dc3545;
+    background: linear-gradient(0deg, rgba(220,53,69,0.1) 33%, rgba(220,53,69,1) 100%);
+    animation: spin .8s linear 0s infinite;
+    margin: 0 auto;
+}
+
+.error-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: counter-spin .8s linear 0s infinite;
+}
+/* OrderFailure end*/
+
+@keyframes spin {
+    from {
+        transform: rotate(0);
+    }
+    to{
+        transform: rotate(359deg);
+    }
+}
+
+@keyframes counter-spin {
+    from {
+        transform: rotate(359deg);
+    }
+    to{
+        transform: rotate(0);
+    }
+}

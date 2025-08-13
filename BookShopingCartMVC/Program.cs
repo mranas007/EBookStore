@@ -44,10 +44,10 @@ QuestPDF.Settings.License = LicenseType.Community;
 var app = builder.Build();
 
 // Seed the default Data into DB.
-using (var scop = app.Services.CreateScope())
-{
-    await DbSeeder.SeedDefault(scop.ServiceProvider);
-}
+//using (var scop = app.Services.CreateScope())
+//{
+//    await DbSeeder.SeedDefault(scop.ServiceProvider);
+//}
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

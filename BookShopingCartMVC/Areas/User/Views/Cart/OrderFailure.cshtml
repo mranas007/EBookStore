@@ -1,5 +1,33 @@
 ﻿
 @{
-	ViewData["Title"] = "Order Failure";
+    ViewData["Title"] = "Order Failed";
 }
-<h1>Your Order failed</h1>
+
+<div class="container py-5">
+    <div class="card shadow-lg border-0 mx-auto" style="max-width: 600px;">
+        <div class="card-body p-5 text-center">
+            <div class="mb-4">
+                <div class="animation-ctn">
+                    <div class="circle-border-error">
+                        <div class="circle">
+                            <div class="error-icon">
+                                <i class="bi bi-x-lg text-danger" style="font-size: 48px;"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <h2 class="card-title mb-3 fw-bold text-danger">Order Failed</h2>
+            <p class="text-muted mb-4">We apologize, but there was an error processing your order. Please try again or contact support if the issue persists.</p>
+            
+            <div class="d-grid gap-3 d-sm-flex justify-content-sm-center">
+                <a asp-area="User" asp-controller="Cart" asp-action="GetUserCart" class="btn btn-danger btn-lg px-4 gap-3">
+                    <i class="bi bi-cart me-2"></i>Return to Cart
+                </a>
+                <a asp-area="Guest" asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary btn-lg px-4">
+                    <i class="bi bi-house me-2"></i>Back to Home
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

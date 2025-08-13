@@ -89,11 +89,12 @@ namespace BookShopingCartMVC.Areas.User.Controllers
                 return RedirectToAction(nameof(GetUserCart));
             }
         }
+
         public async Task<IActionResult> GetUserCart()
         {
             var cart = await _cartRepo.GetAllCartAsync();
             if (cart == null)
-                return BadRequest("sorry there is no cart");
+                ViewData["Error"] = "sorry there is no cart";
             return View(cart);
         }
 
